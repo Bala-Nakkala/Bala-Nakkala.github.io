@@ -10,6 +10,12 @@ const NAV_ITEMS = [
 
 const USER_PROJECTS = [
   {
+    name: "Bala-Nakkala.github.io",
+    tag: "React • Vite • Cloudflare CI/CD",
+    desc: "Personal DevOps portfolio deployed via GitHub and Cloudflare with automated builds and glassmorphic UI.",
+    githubUrl: "https://github.com/Bala-Nakkala/Bala-Nakkala.github.io",
+  },
+  {
     name: "Python_for_Devops",
     tag: "Python • Automation",
     desc: "Automation scripts and operational health-check utilities built for DevOps workflows.",
@@ -857,8 +863,7 @@ export default function App() {
                   <span style={blendedGradientStyle}>Bala Krishna</span> — Resumes
                 </h2>
                 <p className="mt-1 text-sm text-neutral-400">
-                  Upload, manage, preview, and download multiple experience resumes
-                  in one place.
+                  Permanent repository resume link plus temporary browser preview &amp; download.
                 </p>
               </div>
 
@@ -872,6 +877,34 @@ export default function App() {
                   className="hidden"
                 />
               </label>
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-sky-400/35 bg-sky-500/[0.06] p-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-wider text-sky-300">
+                  Permanent Hosted Resume (Survives Refresh)
+                </div>
+                <div className="mt-1 text-sm font-bold text-white">
+                  resume.pdf <span className="text-xs font-normal text-neutral-300">(Place file at public/resume.pdf)</span>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center gap-2 sm:mt-0">
+                <a
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ios-glass-pill rounded-full border-sky-400/40 px-3.5 py-1 text-xs font-semibold text-sky-300"
+                >
+                  Open
+                </a>
+                <a
+                  href="/resume.pdf"
+                  download="Bala_Krishna_Nakkala_DevOps_Resume.pdf"
+                  className="ios-glass-pill rounded-full border-emerald-400/40 px-3.5 py-1 text-xs font-semibold text-emerald-300"
+                >
+                  Download
+                </a>
+              </div>
             </div>
 
             <label className="ios-glass-card mt-6 flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-sky-400/45 px-6 py-8 text-center hover:border-sky-400/80">
@@ -889,7 +922,7 @@ export default function App() {
                 </svg>
               </div>
               <div className="mt-3 text-sm font-semibold text-white">
-                Click to upload one or multiple resumes
+                Click to preview one or multiple resumes temporarily
               </div>
               <div className="mt-1 text-xs text-neutral-400">
                 Supports PDF, DOC, DOCX • Add 2 Yrs, 3 Yrs, or 4 Yrs Experience CVs
@@ -903,6 +936,10 @@ export default function App() {
               />
             </label>
 
+            <p className="mt-3 text-xs text-amber-300/90">
+              Note: Browser-uploaded files above are temporary and clear on page refresh. For permanent availability across refreshes and visitors, place your PDF in <code className="text-white">public/resume.pdf</code> and push to GitHub.
+            </p>
+
             <div className="mt-7">
               <div className="mb-3 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-neutral-400">
                 <span>Uploaded Resumes ({resumes.length})</span>
@@ -913,7 +950,7 @@ export default function App() {
 
               {resumes.length === 0 ? (
                 <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-center text-sm text-neutral-400">
-                  No resumes uploaded yet. Use{" "}
+                  No temporary resumes uploaded yet. Use{" "}
                   <span className="font-semibold text-white">Choose Resume File</span>{" "}
                   above to add your resumes.
                 </div>
