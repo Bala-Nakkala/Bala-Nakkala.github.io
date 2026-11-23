@@ -98,21 +98,21 @@ const USER_PROJECTS = [
 ];
 
 const KEY_SKILL_PILLS = [
-  { name: "AWS", dot: "bg-amber-400" },
-  { name: "Azure", dot: "bg-sky-400" },
-  { name: "Kubernetes", dot: "bg-blue-400" },
-  { name: "Docker", dot: "bg-cyan-400" },
-  { name: "Jenkins", dot: "bg-rose-400" },
-  { name: "GitLab", dot: "bg-orange-500" },
-  { name: "GitHub", dot: "bg-neutral-200" },
-  { name: "Ansible", dot: "bg-white" },
-  { name: "Terraform", dot: "bg-purple-400" },
-  { name: "ArgoCD", dot: "bg-orange-400" },
-  { name: "CI/CD", dot: "bg-indigo-400" },
-  { name: "Linux", dot: "bg-yellow-300" },
-  { name: "Bash", dot: "bg-lime-400" },
-  { name: "Python", dot: "bg-emerald-400" },
-  { name: "Monitoring", dot: "bg-amber-500" },
+  { name: "AWS" },
+  { name: "Azure" },
+  { name: "Kubernetes" },
+  { name: "Docker" },
+  { name: "Jenkins" },
+  { name: "GitLab" },
+  { name: "GitHub" },
+  { name: "Ansible" },
+  { name: "Terraform" },
+  { name: "ArgoCD" },
+  { name: "CI/CD" },
+  { name: "Linux" },
+  { name: "Bash" },
+  { name: "Python" },
+  { name: "Monitoring" },
 ];
 
 const SKILL_DETAILS = {
@@ -481,108 +481,231 @@ const SKILL_DETAILS = {
   },
 };
 
-function SkillClassicLogo({ name }) {
+function SkillExactLogo({ name }) {
   switch (name) {
     case "AWS":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M17.5 19H7a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18.1 8.5 4 4 0 0 1 17.5 19z" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M17.6 17.2H6.8a4.3 4.3 0 0 1-.5-8.57A5.8 5.8 0 0 1 17.8 7.2a3.8 3.8 0 0 1-.2 10z"
+            fill="#FFFFFF"
+          />
+          <path
+            d="M6.5 19.6c3.4 1.6 7.6 1.6 11 0"
+            stroke="#FF9900"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
         </svg>
       );
     case "Azure":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-sky-400" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M13.05 4.24L6.56 18.05 2 18.05 8.49 4.24zM14.2 5.45L10.8 14.3l5.7 5.46H22z" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <path d="M12.8 4L6.3 17.8H2L8.5 4h4.3z" fill="#38BDF8" />
+          <path d="M14.1 5.3L10.4 14l5.8 5.8H22L14.1 5.3z" fill="#0284C7" />
         </svg>
       );
     case "Kubernetes":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polygon points="12 2 20.5 7 20.5 17 12 22 3.5 17 3.5 7" />
-          <circle cx="12" cy="12" r="2.2" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" strokeWidth="1.8">
+          <polygon points="12 2.5 20.2 7.2 20.2 16.8 12 21.5 3.8 16.8 3.8 7.2" />
+          <circle cx="12" cy="12" r="2.3" />
+          <path d="M12 2.5v7.2M12 14.3v7.2M3.8 7.2l6.2 3.6M14 13.2l6.2 3.6M20.2 7.2L14 10.8M10 13.2l-6.2 3.6" />
         </svg>
       );
     case "Docker":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="11" width="14" height="7" rx="1.5" />
-          <path d="M17 14h2.5a1.5 1.5 0 0 0 1.5-1.5V11" />
-          <path d="M6 11V8h3v3M10 11V8h3v3M14 11V8h2v3" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M3.5 12.2h14.6c-.4 4.2-3.6 6.8-8.1 6.8-4.4 0-6.5-2.3-6.5-6.8z"
+            fill="#38BDF8"
+          />
+          <rect x="6.2" y="9.2" width="2.2" height="2.2" rx="0.4" fill="#E0F2FE" />
+          <rect x="9" y="9.2" width="2.2" height="2.2" rx="0.4" fill="#E0F2FE" />
+          <rect x="11.8" y="9.2" width="2.2" height="2.2" rx="0.4" fill="#E0F2FE" />
+          <rect x="9" y="6.6" width="2.2" height="2.2" rx="0.4" fill="#E0F2FE" />
+          <path
+            d="M18.1 13.8c1.3 0 2.4-.7 2.8-1.9-.7-.4-1.6-.4-2.4.1"
+            stroke="#38BDF8"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+          />
         </svg>
       );
     case "Jenkins":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="8" />
-          <circle cx="12" cy="10" r="2.5" />
-          <path d="M8.5 16.5c1-1.5 2.2-2 3.5-2s2.5.5 3.5 2" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="8.8" fill="#E5E7EB" />
+          <circle cx="12" cy="9.5" r="2.8" fill="#D33833" />
+          <path
+            d="M8 16.5c1.1-1.7 2.5-2.4 4-2.4s2.9.7 4 2.4"
+            stroke="#374151"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
         </svg>
       );
     case "GitLab":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-orange-500" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 21l-8.5-6.2 2.6-8.1L8.8 15h6.4l2.7-8.3 2.6 8.1z" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <path d="M12 20.8l-8.4-6.1 2.5-7.8 2.8 8.3h6.2l2.8-8.3 2.5 7.8-8.4 6.1z" fill="#FC6D26" />
+          <path d="M12 20.8l-3.1-5.6h6.2L12 20.8z" fill="#E24329" />
         </svg>
       );
     case "GitHub":
-      return <GitHubLogo className="h-3.5 w-3.5 shrink-0 text-neutral-200" />;
+      return <GitHubLogo className="h-4 w-4 shrink-0 text-white" />;
     case "Ansible":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 7l-4.5 10h2.2l1-2.5h5.2l-3.4-3.2L12 7z" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9.2" fill="#FFFFFF" />
+          <path
+            d="M12 6.8L7.6 16.8h2l1.1-2.6h5l-3.2-3L12 6.8z"
+            fill="#000000"
+          />
         </svg>
       );
     case "Terraform":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-purple-400" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M4 4l6 3.5v7L4 11V4zm7 4l6 3.5v7L11 15V8zm7 4l2 1.2v7L18 19v-7z" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <path d="M4.2 4.5l5.6 3.2v6.4l-5.6-3.2V4.5z" fill="#A78BFA" />
+          <path d="M10.6 8.2l5.6 3.2v6.4l-5.6-3.2V8.2z" fill="#8B5CF6" />
+          <path d="M10.6 15.4l5.6 3.2v2.4l-5.6-3.2v-2.4z" fill="#7C3AED" />
+          <path d="M17 8.2l2.8 1.6v6.4L17 14.6V8.2z" fill="#C4B5FD" />
         </svg>
       );
     case "ArgoCD":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="8" />
-          <path d="M8.5 14.5L12 7.5l3.5 7" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="8.8" stroke="#FB923C" strokeWidth="2" />
+          <path d="M8.3 15.2L12 7.4l3.7 7.8" stroke="#FDBA74" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="12" cy="13.5" r="1.4" fill="#FB923C" />
         </svg>
       );
     case "CI/CD":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M17 8l4 4-4 4" />
-          <path d="M7 16l-4-4 4-4" />
-          <path d="M14 4l-4 16" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#93C5FD" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M7.5 16.5a4.5 4.5 0 1 1 1-7.8l6.9 6.6a4.5 4.5 0 1 0 1-7.8" />
         </svg>
       );
     case "Linux":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 3c-2.8 0-4.5 2.5-4.5 6 0 2.5-1.5 4.5-2.5 6.5-.6 1.2.2 2.5 1.5 2.5h11c1.3 0 2.1-1.3 1.5-2.5-1-2-2.5-4-2.5-6.5 0-3.5-1.7-6-4.5-6z" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 3.2c-2.6 0-4.2 2.4-4.2 5.7 0 2.4-1.4 4.3-2.3 6.2-.6 1.2.2 2.5 1.5 2.5h10c1.3 0 2.1-1.3 1.5-2.5-.9-1.9-2.3-3.8-2.3-6.2 0-3.3-1.6-5.7-4.2-5.7z"
+            fill="#FACC15"
+          />
+          <circle cx="10.4" cy="9.2" r="0.9" fill="#000000" />
+          <circle cx="13.6" cy="9.2" r="0.9" fill="#000000" />
+          <path d="M10.5 11.6h3" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       );
     case "Bash":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="4" width="18" height="16" rx="2" />
-          <path d="M7 9l3 3-3 3M12 15h5" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4.5" width="18" height="15" rx="2.5" stroke="#A3E635" strokeWidth="1.9" />
+          <path d="M7.2 9.5l2.8 2.5-2.8 2.5" stroke="#A3E635" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M12 14.5h4.8" stroke="#A3E635" strokeWidth="1.9" strokeLinecap="round" />
         </svg>
       );
     case "Python":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M9 4h6a3 3 0 0 1 3 3v3H9a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3z" />
-          <path d="M15 20H9a3 3 0 0 1-3-3v-3h9a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3z" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <path d="M9.5 4.2h5a2.8 2.8 0 0 1 2.8 2.8v3.2H9.5a2.8 2.8 0 0 1-2.8-2.8V7a2.8 2.8 0 0 1 2.8-2.8z" fill="#38BDF8" />
+          <path d="M14.5 19.8h-5A2.8 2.8 0 0 1 6.7 17v-3.2h7.8a2.8 2.8 0 0 1 2.8 2.8V17a2.8 2.8 0 0 1-2.8 2.8z" fill="#FACC15" />
+          <circle cx="10.6" cy="6.8" r="0.8" fill="#FFFFFF" />
+          <circle cx="13.4" cy="17.2" r="0.8" fill="#000000" />
         </svg>
       );
     case "Monitoring":
       return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M3 12h4l2-5 4 10 2-5h6" />
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <rect x="4" y="13" width="3.2" height="6.5" rx="1" fill="#38BDF8" />
+          <rect x="10.4" y="8.5" width="3.2" height="11" rx="1" fill="#34D399" />
+          <rect x="16.8" y="4.5" width="3.2" height="15" rx="1" fill="#FBBF24" />
         </svg>
       );
     default:
       return null;
   }
+}
+
+function DevOpsCenterInfinityLogo() {
+  return (
+    <div className="pointer-events-none flex items-center justify-center py-2">
+      <div className="relative flex items-center justify-center">
+        <div
+          aria-hidden="true"
+          className="h-28 w-56 sm:h-32 sm:w-64 rounded-full bg-blue-500/25 blur-2xl"
+        />
+        <svg
+          className="relative h-28 w-56 sm:h-32 sm:w-64 drop-shadow-[0_0_22px_rgba(59,130,246,0.85)]"
+          viewBox="0 0 320 150"
+          fill="none"
+        >
+          <defs>
+            <linearGradient id="devOpsMetallicBlue" x1="20" y1="20" x2="300" y2="130" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#93C5FD" />
+              <stop offset="25%" stopColor="#2563EB" />
+              <stop offset="50%" stopColor="#E2E8F0" />
+              <stop offset="75%" stopColor="#1D4ED8" />
+              <stop offset="100%" stopColor="#60A5FA" />
+            </linearGradient>
+            <linearGradient id="devOpsSilverHighlight" x1="0" y1="0" x2="320" y2="150" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#F8FAFC" stopOpacity="0.95" />
+              <stop offset="50%" stopColor="#38BDF8" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#E2E8F0" stopOpacity="0.95" />
+            </linearGradient>
+          </defs>
+
+          <path
+            d="M225 42c54 0 54 66 0 66-46 0-74-66-130-66-54 0-54 66 0 66 56 0 84-66 130-66z"
+            stroke="#1E40AF"
+            strokeWidth="22"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.55"
+          />
+          <path
+            d="M225 42c54 0 54 66 0 66-46 0-74-66-130-66-54 0-54 66 0 66 56 0 84-66 130-66z"
+            stroke="url(#devOpsMetallicBlue)"
+            strokeWidth="16"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M225 42c54 0 54 66 0 66-46 0-74-66-130-66-54 0-54 66 0 66 56 0 84-66 130-66z"
+            stroke="url(#devOpsSilverHighlight)"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          <text
+            x="92"
+            y="82"
+            textAnchor="middle"
+            fill="#FFFFFF"
+            fontSize="24"
+            fontWeight="700"
+            fontFamily="system-ui, -apple-system, sans-serif"
+          >
+            Dev
+          </text>
+          <text
+            x="228"
+            y="82"
+            textAnchor="middle"
+            fill="#FFFFFF"
+            fontSize="24"
+            fontWeight="700"
+            fontFamily="system-ui, -apple-system, sans-serif"
+          >
+            Ops
+          </text>
+        </svg>
+      </div>
+    </div>
+  );
 }
 
 const MULTI_COLOR_GRADIENTS = [
@@ -1061,8 +1184,8 @@ export default function App() {
       <main className="relative z-10 w-full px-3 sm:px-5 py-8 lg:pr-36">
         {activePage === "home" && (
           <>
-            <section className="relative flex flex-col justify-between gap-8 lg:flex-row lg:items-start">
-              <div className="max-w-3xl">
+            <section className="relative flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+              <div className="max-w-2xl">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12]">
                   Hi, I&apos;m{" "}
                   <span style={blendedGradientStyle}>Bala Krishna</span>
@@ -1070,14 +1193,14 @@ export default function App() {
                 </h1>
 
                 <div className="mt-4 flex flex-wrap items-center gap-2.5 text-sm sm:text-base font-medium">
-                  <span className="text-sky-400">Automating</span>
+                  <span className="text-orange-400">Automating</span>
                   <span className="text-neutral-500">•</span>
-                  <span className="text-purple-400">Deploying</span>
+                  <span className="text-emerald-400">Deploying</span>
                   <span className="text-neutral-500">•</span>
-                  <span className="text-fuchsia-400">Scaling</span>
+                  <span className="text-blue-400">Scaling</span>
                 </div>
 
-                <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-neutral-300">
+                <p className="mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-neutral-300">
                   4 years of hands-on experience in AWS, Azure, Kubernetes, CI/CD,
                   and infrastructure automation to build reliable and scalable systems.
                 </p>
@@ -1086,11 +1209,15 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => setActivePage("projects")}
-                    className="ios-primary-btn cursor-pointer rounded-full bg-gradient-to-r from-sky-500 via-purple-500 to-fuchsia-500 px-6 py-2.5 text-sm font-semibold text-white"
+                    className="ios-primary-btn cursor-pointer rounded-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 px-6 py-2.5 text-sm font-semibold text-white"
                   >
                     View My Projects →
                   </button>
                 </div>
+              </div>
+
+              <div className="lg:mr-4">
+                <DevOpsCenterInfinityLogo />
               </div>
 
               <FarRightSideStreakFlow />
@@ -1391,8 +1518,7 @@ export default function App() {
                           : "border-white/15 bg-white/[0.04] text-neutral-200 hover:border-sky-400/50 hover:text-white"
                       }`}
                     >
-                      <span className={`h-2 w-2 rounded-full ${skill.dot}`} />
-                      <SkillClassicLogo name={skill.name} />
+                      <SkillExactLogo name={skill.name} />
                       <span>{skill.name}</span>
                     </button>
                   );
