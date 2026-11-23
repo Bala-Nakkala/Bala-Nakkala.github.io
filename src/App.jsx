@@ -8,6 +8,24 @@ const NAV_ITEMS = [
   { id: "resume", label: "Resume" },
 ];
 
+// మీకు మాత్రమే Remove & Upload ఆప్షన్స్ కనిపించడానికి Admin PIN (మీకు నచ్చినట్లు మార్చుకోవచ్చు)
+const ADMIN_PIN = "balu123";
+
+const INITIAL_HOSTED_RESUMES = [
+  {
+    id: "hosted-devops",
+    name: "Bala_Krishna_DevOps_Engineer.pdf",
+    url: "/Bala_Krishna_DevOps_Engineer.pdf",
+    borderClass: "border-sky-400/35 bg-sky-500/[0.06]",
+  },
+  {
+    id: "hosted-global",
+    name: "Bala_Krishna_DevOps_Engineer_Global.pdf",
+    url: "/Bala_Krishna_DevOps_Engineer_Global.pdf",
+    borderClass: "border-purple-400/35 bg-purple-500/[0.06]",
+  },
+];
+
 const USER_PROJECTS = [
   {
     name: "Bala-Nakkala.github.io",
@@ -294,8 +312,19 @@ export default function App() {
   const [activePage, setActivePage] = useState("home");
   const [activeInfoCard, setActiveInfoCard] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [hostedResumes, setHostedResumes] = useState(INITIAL_HOSTED_RESUMES);
   const [resumes, setResumes] = useState([]);
   const [gradIndex, setGradIndex] = useState(0);
+  const [isOwner, setIsOwner] = useState(() => {
+    try {
+      return localStorage.getItem("bk_portfolio_owner") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [showPinPrompt, setShowPinPrompt] = useState(false);
+  const [pinInput, setPinInput] = useState("");
+  const [pinError, setPinError] = useState("");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -316,6 +345,37 @@ export default function App() {
     setActiveInfoCard((prev) => (prev === key ? null : key));
   };
 
+  const handleOwnerToggle = () => {
+    if (isOwner) {
+      setIsOwner(false);
+      setShowPinPrompt(false);
+      setPinInput("");
+      setPinError("");
+      try {
+        localStorage.removeItem("bk_portfolio_owner");
+      } catch {}
+    } else {
+      setShowPinPrompt((prev) => !prev);
+      setPinInput("");
+      setPinError("");
+    }
+  };
+
+  const handlePinSubmit = (e) => {
+    e.preventDefault();
+    if (pinInput === ADMIN_PIN) {
+      setIsOwner(true);
+      setShowPinPrompt(false);
+      setPinInput("");
+      setPinError("");
+      try {
+        localStorage.setItem("bk_portfolio_owner", "true");
+      } catch {}
+    } else {
+      setPinError("Incorrect PIN");
+    }
+  };
+
   const handleResumeUpload = (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
@@ -323,17 +383,16 @@ export default function App() {
     const mapped = files.map((file) => ({
       id: `${file.name}-${file.lastModified}-${Math.random().toString(36).slice(2, 6)}`,
       name: file.name,
-      sizeKb: (file.size / 1024).toFixed(1),
-      uploadedDate: new Date().toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }),
       url: URL.createObjectURL(file),
+      borderClass: "border-emerald-400/35 bg-emerald-500/[0.06]",
     }));
 
     setResumes((prev) => [...mapped, ...prev]);
     e.target.value = "";
+  };
+
+  const handleRemoveHostedResume = (id) => {
+    setHostedResumes((prev) => prev.filter((item) => item.id !== id));
   };
 
   const handleRemoveResume = (id) => {
@@ -862,13 +921,154 @@ export default function App() {
                 <h2 className="mt-1 text-2xl sm:text-3xl font-extrabold text-white">
                   <span style={blendedGradientStyle}>Bala Krishna</span> — Resumes
                 </h2>
-                <p className="mt-1 text-sm text-neutral-400">
-                  Permanent repository resume links plus temporary browser preview &amp; download.
-                </p>
               </div>
 
-              <label className="ios-primary-btn inline-flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-purple-500 to-fuchsia-500 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white">
-                <span>+ Choose Resume File</span>
+              <div className="flex flex-wrap items-center gap-2.5">
+                {isOwner && (
+                  <label className="ios-primary-btn inline-flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-purple-500 to-fuchsia-500 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white">
+                    <span>+ Choose Resume File</span>
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      multiple
+                      onChange={handleResumeUpload}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleOwnerToggle}
+                  title={isOwner ? "Lock Admin Mode" : "Owner Access"}
+                  className={`ios-glass-pill cursor-pointer rounded-full px-3.5 py-2 text-xs font-semibold ${
+                    isOwner
+                      ? "border-amber-400/50 text-amber-300"
+                      : "border-white/15 text-neutral-400 hover:text-white"
+                  }`}
+                >
+                  {isOwner ? "🔓 Admin Active" : "🔒"}
+                </button>
+              </div>
+            </div>
+
+            {showPinPrompt && !isOwner && (
+              <form
+                onSubmit={handlePinSubmit}
+                className="mt-4 flex flex-wrap items-center justify-end gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-3"
+              >
+                <input
+                  type="password"
+                  value={pinInput}
+                  onChange={(e) => setPinInput(e.target.value)}
+                  placeholder="Enter Owner PIN"
+                  className="rounded-full border border-white/15 bg-black/60 px-4 py-1.5 text-xs text-white placeholder-neutral-400 outline-none focus:border-sky-400"
+                />
+                <button
+                  type="submit"
+                  className="ios-glass-pill cursor-pointer rounded-full border-sky-400/50 px-4 py-1.5 text-xs font-semibold text-sky-300"
+                >
+                  Unlock
+                </button>
+                {pinError && (
+                  <span className="text-xs text-rose-400">{pinError}</span>
+                )}
+              </form>
+            )}
+
+            <div className="mt-6 space-y-3">
+              {hostedResumes.map((r) => (
+                <div
+                  key={r.id}
+                  className={`rounded-2xl border p-4 sm:flex sm:items-center sm:justify-between sm:gap-4 ${r.borderClass}`}
+                >
+                  <div className="text-sm font-bold text-white">{r.name}</div>
+                  <div className="mt-3 flex items-center gap-2 sm:mt-0">
+                    <a
+                      href={r.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ios-glass-pill rounded-full border-sky-400/40 px-3.5 py-1 text-xs font-semibold text-sky-300"
+                    >
+                      Open
+                    </a>
+                    <a
+                      href={r.url}
+                      download={r.name}
+                      className="ios-glass-pill rounded-full border-emerald-400/40 px-3.5 py-1 text-xs font-semibold text-emerald-300"
+                    >
+                      Download
+                    </a>
+                    {isOwner && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveHostedResume(r.id)}
+                        className="ios-glass-pill cursor-pointer rounded-full border-rose-500/40 px-3.5 py-1 text-xs font-semibold text-rose-300"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {resumes.map((r) => (
+                <div
+                  key={r.id}
+                  className={`rounded-2xl border p-4 sm:flex sm:items-center sm:justify-between sm:gap-4 ${r.borderClass}`}
+                >
+                  <div className="text-sm font-bold text-white">{r.name}</div>
+                  <div className="mt-3 flex items-center gap-2 sm:mt-0">
+                    <a
+                      href={r.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ios-glass-pill rounded-full border-sky-400/40 px-3.5 py-1 text-xs font-semibold text-sky-300"
+                    >
+                      Open
+                    </a>
+                    <a
+                      href={r.url}
+                      download={r.name}
+                      className="ios-glass-pill rounded-full border-emerald-400/40 px-3.5 py-1 text-xs font-semibold text-emerald-300"
+                    >
+                      Download
+                    </a>
+                    {isOwner && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveResume(r.id)}
+                        className="ios-glass-pill cursor-pointer rounded-full border-rose-500/40 px-3.5 py-1 text-xs font-semibold text-rose-300"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {isOwner && (
+              <label className="ios-glass-card mt-6 flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-sky-400/45 px-6 py-8 text-center hover:border-sky-400/80">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-sky-400/30 bg-sky-500/10 text-sky-400">
+                  <svg
+                    className="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </div>
+                <div className="mt-3 text-sm font-semibold text-white">
+                  Click to upload or preview additional resumes
+                </div>
+                <div className="mt-1 text-xs text-neutral-400">
+                  Supports PDF, DOC, DOCX
+                </div>
                 <input
                   type="file"
                   accept=".pdf,.doc,.docx"
@@ -877,172 +1077,7 @@ export default function App() {
                   className="hidden"
                 />
               </label>
-            </div>
-
-            <div className="mt-6 space-y-3">
-              <div className="rounded-2xl border border-sky-400/35 bg-sky-500/[0.06] p-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider text-sky-300">
-                    Permanent Hosted Resume (Survives Refresh)
-                  </div>
-                  <div className="mt-1 text-sm font-bold text-white">
-                    Bala_Krishna_DevOps_Engineer.pdf
-                  </div>
-                </div>
-                <div className="mt-3 flex items-center gap-2 sm:mt-0">
-                  <a
-                    href="/Bala_Krishna_DevOps_Engineer.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ios-glass-pill rounded-full border-sky-400/40 px-3.5 py-1 text-xs font-semibold text-sky-300"
-                  >
-                    Open
-                  </a>
-                  <a
-                    href="/Bala_Krishna_DevOps_Engineer.pdf"
-                    download="Bala_Krishna_DevOps_Engineer.pdf"
-                    className="ios-glass-pill rounded-full border-emerald-400/40 px-3.5 py-1 text-xs font-semibold text-emerald-300"
-                  >
-                    Download
-                  </a>
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-purple-400/35 bg-purple-500/[0.06] p-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider text-purple-300">
-                    Permanent Hosted Global CV (Survives Refresh)
-                  </div>
-                  <div className="mt-1 text-sm font-bold text-white">
-                    Bala_Krishna_DevOps_Engineer_Global.pdf
-                  </div>
-                </div>
-                <div className="mt-3 flex items-center gap-2 sm:mt-0">
-                  <a
-                    href="/Bala_Krishna_DevOps_Engineer_Global.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ios-glass-pill rounded-full border-sky-400/40 px-3.5 py-1 text-xs font-semibold text-sky-300"
-                  >
-                    Open
-                  </a>
-                  <a
-                    href="/Bala_Krishna_DevOps_Engineer_Global.pdf"
-                    download="Bala_Krishna_DevOps_Engineer_Global.pdf"
-                    className="ios-glass-pill rounded-full border-emerald-400/40 px-3.5 py-1 text-xs font-semibold text-emerald-300"
-                  >
-                    Download
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <label className="ios-glass-card mt-6 flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-sky-400/45 px-6 py-8 text-center hover:border-sky-400/80">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-sky-400/30 bg-sky-500/10 text-sky-400">
-                <svg
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" y1="3" x2="12" y2="15" />
-                </svg>
-              </div>
-              <div className="mt-3 text-sm font-semibold text-white">
-                Click to preview additional resumes temporarily
-              </div>
-              <div className="mt-1 text-xs text-neutral-400">
-                Supports PDF, DOC, DOCX • Temporary browser preview only
-              </div>
-              <input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                multiple
-                onChange={handleResumeUpload}
-                className="hidden"
-              />
-            </label>
-
-            <p className="mt-3 text-xs text-amber-300/90">
-              Note: Permanent resumes above are served from <code className="text-white">public/</code> and stay available after refresh. Files uploaded via browser upload are temporary and reset on page refresh.
-            </p>
-
-            <div className="mt-7">
-              <div className="mb-3 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-neutral-400">
-                <span>Uploaded Resumes ({resumes.length})</span>
-                {resumes.length > 0 && (
-                  <span className="text-sky-400">Ready to View &amp; Download</span>
-                )}
-              </div>
-
-              {resumes.length === 0 ? (
-                <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-center text-sm text-neutral-400">
-                  No temporary resumes uploaded yet. Use{" "}
-                  <span className="font-semibold text-white">Choose Resume File</span>{" "}
-                  above to add your resumes.
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
-                  {resumes.map((r) => (
-                    <div
-                      key={r.id}
-                      className="ios-glass-card flex flex-col justify-between rounded-2xl border border-white/15 p-4 hover:border-sky-400/50"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-sky-400/30 bg-sky-500/10 text-sky-400">
-                          <svg
-                            className="h-5 w-5"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                          </svg>
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="truncate text-sm font-bold text-white">
-                            {r.name}
-                          </div>
-                          <div className="mt-0.5 text-xs text-neutral-400">
-                            {r.sizeKb} KB • Added {r.uploadedDate}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 flex items-center justify-end gap-2 border-t border-white/10 pt-3">
-                        <a
-                          href={r.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ios-glass-pill rounded-full border-sky-400/40 px-3.5 py-1 text-xs font-semibold text-sky-300"
-                        >
-                          Open
-                        </a>
-                        <a
-                          href={r.url}
-                          download={r.name}
-                          className="ios-glass-pill rounded-full border-emerald-400/40 px-3.5 py-1 text-xs font-semibold text-emerald-300"
-                        >
-                          Download
-                        </a>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveResume(r.id)}
-                          className="ios-glass-pill cursor-pointer rounded-full border-rose-500/40 px-3.5 py-1 text-xs font-semibold text-rose-300"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            )}
           </section>
         )}
 
