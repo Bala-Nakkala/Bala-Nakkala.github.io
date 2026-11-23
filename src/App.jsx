@@ -179,7 +179,7 @@ function FarRightSideStreakFlow() {
   return (
     <div
       ref={columnRef}
-      className="pointer-events-none relative hidden lg:flex flex-col items-end gap-1.5 pr-0 select-none"
+      className="pointer-events-none relative hidden lg:flex flex-col items-end gap-1.5 pr-1 select-none"
     >
       <div
         ref={streakRef}
@@ -196,7 +196,7 @@ function FarRightSideStreakFlow() {
         return (
           <span
             key={stage}
-            className={`pr-4 text-[11px] font-semibold tracking-wide transition-all duration-200 ${
+            className={`pr-3.5 text-[11px] font-semibold tracking-wide transition-all duration-200 ${
               isHighlighted
                 ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.85)]"
                 : "text-sky-100/75"
@@ -603,7 +603,9 @@ export default function App() {
                 </div>
               </div>
 
-              <FarRightSideStreakFlow />
+              <div className="lg:-mr-4 xl:-mr-10">
+                <FarRightSideStreakFlow />
+              </div>
             </section>
 
             {/* 3 Interactive iOS Glass Highlight Cards */}
