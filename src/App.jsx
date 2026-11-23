@@ -33,7 +33,7 @@ const FLOW_STAGES = [
   "Build",
   "Docker Build",
   "Trivy",
-  "ECR",
+  "Private Repo",
   "GitOps Repo",
   "Argo CD",
   "Kubernetes",
@@ -139,28 +139,28 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-// Smooth continuous star-streak moving horizontally through the middle of the stage labels from Code to User
+// Single-line horizontal star-streak moving smoothly across all stages from Code to User
 function SmoothHorizontalMiddleStreak() {
-  const containerRef = useRef(null);
+  const trackRef = useRef(null);
   const streakRef = useRef(null);
 
   useEffect(() => {
     let animId;
     let startTime = null;
-    const cycleDuration = 6500; // ms for smooth travel from Code to User
+    const cycleDuration = 7500; // smooth full travel from Code to User
 
     const animate = (now) => {
       if (!startTime) startTime = now;
       const elapsed = (now - startTime) % cycleDuration;
-      const progress = elapsed / cycleDuration; // 0 -> 1
+      const progress = elapsed / cycleDuration;
 
-      const container = containerRef.current;
+      const track = trackRef.current;
       const streak = streakRef.current;
 
-      if (container && streak) {
-        const width = container.offsetWidth;
-        const streakWidth = streak.offsetWidth || 80;
-        const x = -streakWidth + progress * (width + streakWidth * 1.4);
+      if (track && streak) {
+        const width = track.scrollWidth || track.offsetWidth;
+        const streakWidth = streak.offsetWidth || 84;
+        const x = -streakWidth + progress * (width + streakWidth * 1.25);
         streak.style.transform = `translate3d(${x}px, -50%, 0)`;
       }
 
@@ -172,30 +172,32 @@ function SmoothHorizontalMiddleStreak() {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative flex w-full flex-wrap items-center gap-x-3 gap-y-2 overflow-hidden py-4 select-none"
-    >
-      {FLOW_STAGES.map((stage, idx) => (
-        <React.Fragment key={stage}>
-          <span className="text-xs sm:text-sm font-semibold tracking-wide text-sky-100/90">
-            {stage}
-          </span>
-          {idx < FLOW_STAGES.length - 1 && (
-            <span className="text-xs text-sky-300/35">›</span>
-          )}
-        </React.Fragment>
-      ))}
-
-      {/* Smooth moving star-streak passing right across the middle line of the letters */}
+    <div className="w-full overflow-x-auto py-4 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <div
-        ref={streakRef}
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-0 flex items-center will-change-transform"
-        style={{ transform: "translate3d(-100px, -50%, 0)" }}
+        ref={trackRef}
+        className="relative inline-flex min-w-full flex-nowrap items-center justify-between gap-1.5 sm:gap-2 overflow-hidden py-1"
       >
-        <span className="h-[2.5px] w-16 sm:w-20 rounded-full bg-gradient-to-r from-transparent via-sky-400/70 to-cyan-200" />
-        <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_20px_#22d3ee]" />
+        {FLOW_STAGES.map((stage, idx) => (
+          <React.Fragment key={stage}>
+            <span className="whitespace-nowrap text-[10px] sm:text-[11px] xl:text-xs font-semibold tracking-tight text-sky-100/90">
+              {stage}
+            </span>
+            {idx < FLOW_STAGES.length - 1 && (
+              <span className="text-[10px] text-sky-300/35">›</span>
+            )}
+          </React.Fragment>
+        ))}
+
+        {/* Smooth moving star-streak passing right across the middle of all stages from Code to User */}
+        <div
+          ref={streakRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 left-0 flex items-center will-change-transform"
+          style={{ transform: "translate3d(-100px, -50%, 0)" }}
+        >
+          <span className="h-[2.5px] w-16 sm:w-20 rounded-full bg-gradient-to-r from-transparent via-sky-400/75 to-cyan-200" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_20px_#22d3ee]" />
+        </div>
       </div>
     </div>
   );
@@ -562,8 +564,8 @@ export default function App() {
       <main className="relative z-10 mx-auto max-w-7xl px-6 py-8">
         {activePage === "home" && (
           <>
-            <section className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
-              <div className="lg:col-span-6">
+            <section className="grid grid-cols-1 items-center gap-6 lg:grid-cols-12">
+              <div className="lg:col-span-5">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12]">
                   Hi, I&apos;m{" "}
                   <span style={blendedGradientStyle}>Bala Krishna</span>
@@ -594,7 +596,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="lg:col-span-6">
+              <div className="lg:col-span-7">
                 <SmoothHorizontalMiddleStreak />
               </div>
             </section>
