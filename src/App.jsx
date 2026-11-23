@@ -8,7 +8,6 @@ const NAV_ITEMS = [
   { id: "resume", label: "Resume" },
 ];
 
-// మీకు మాత్రమే Remove & Upload ఆప్షన్స్ కనిపించడానికి Admin PIN (మీకు నచ్చినట్లు మార్చుకోవచ్చు)
 const ADMIN_PIN = "balu123";
 
 const INITIAL_HOSTED_RESUMES = [
@@ -139,7 +138,6 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-// Far-right vertical flow where the streak moves alongside the stages and highlights the active stage
 function FarRightSideStreakFlow() {
   const columnRef = useRef(null);
   const streakRef = useRef(null);
@@ -183,7 +181,6 @@ function FarRightSideStreakFlow() {
       ref={columnRef}
       className="pointer-events-none relative hidden lg:flex flex-col items-end gap-1.5 pr-0 select-none"
     >
-      {/* Moving star-streak running alongside (to the right of) the stage names */}
       <div
         ref={streakRef}
         aria-hidden="true"
@@ -194,7 +191,6 @@ function FarRightSideStreakFlow() {
         <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_20px_#22d3ee]" />
       </div>
 
-      {/* Stage labels (no boxes) highlighting when reached */}
       {FLOW_STAGES.map((stage, idx) => {
         const isHighlighted = idx === activeIndex;
         return (
