@@ -120,6 +120,20 @@ const MULTI_COLOR_GRADIENTS = [
   "linear-gradient(90deg, #F87171 0%, #FACC15 50%, #38BDF8 100%)",
   "linear-gradient(90deg, #4ADE80 0%, #22D3EE 50%, #C084FC 100%)",
   "linear-gradient(90deg, #FB923C 0%, #F472B6 50%, #60A5FA 100%)",
+  "linear-gradient(90deg, #A7F3D0 0%, #86EFAC 55%, #6EE7B7 100%)",
+  "linear-gradient(90deg, #FDE68A 0%, #FDBA74 50%, #F9A8D4 100%)",
+  "linear-gradient(90deg, #D9F99D 0%, #FDE047 50%, #FB923C 100%)",
+  "linear-gradient(90deg, #93C5FD 0%, #F472B6 52%, #FB7185 100%)",
+  "linear-gradient(90deg, #99F6E4 0%, #A5F3FC 50%, #FDE68A 100%)",
+  "linear-gradient(90deg, #7DD3FC 0%, #60A5FA 100%)",
+  "linear-gradient(90deg, #BAE6FD 0%, #93C5FD 100%)",
+  "linear-gradient(90deg, #DBEAFE 0%, #E0E7FF 100%)",
+  "linear-gradient(90deg, #67E8F9 0%, #38BDF8 100%)",
+  "linear-gradient(90deg, #C4B5FD 0%, #F472B6 100%)",
+  "linear-gradient(90deg, #FDA4AF 0%, #FB923C 50%, #F87171 100%)",
+  "linear-gradient(90deg, #F9A8D4 0%, #F472B6 55%, #C084FC 100%)",
+  "linear-gradient(90deg, #93C5FD 0%, #67E8F9 52%, #86EFAC 100%)",
+  "linear-gradient(90deg, #38BDF8 0%, #93C5FD 50%, #C4B5FD 100%)",
 ];
 
 function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
