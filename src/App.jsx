@@ -487,14 +487,21 @@ function SkillExactLogo({ name }) {
       return (
         <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
           <path
-            d="M17.6 17.2H6.8a4.3 4.3 0 0 1-.5-8.57A5.8 5.8 0 0 1 17.8 7.2a3.8 3.8 0 0 1-.2 10z"
+            d="M17.5 16.5H6.9a4.1 4.1 0 0 1-.4-8.17A5.6 5.6 0 0 1 17.4 7a3.6 3.6 0 0 1 .1 9.5z"
             fill="#FFFFFF"
           />
           <path
-            d="M6.5 19.6c3.4 1.6 7.6 1.6 11 0"
+            d="M6.2 19.2c3.6 1.7 8 1.7 11.6 0"
+            stroke="#FF9900"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <path
+            d="M16.5 17.8l1.6 1.4-1.8 1.2"
             stroke="#FF9900"
             strokeWidth="1.8"
             strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       );
@@ -535,14 +542,12 @@ function SkillExactLogo({ name }) {
     case "Jenkins":
       return (
         <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="8.8" fill="#E5E7EB" />
-          <circle cx="12" cy="9.5" r="2.8" fill="#D33833" />
           <path
-            d="M8 16.5c1.1-1.7 2.5-2.4 4-2.4s2.9.7 4 2.4"
-            stroke="#374151"
-            strokeWidth="1.8"
-            strokeLinecap="round"
+            d="M12 2.5c-4.2 0-7.5 3.2-7.5 7.3 0 2.5 1.1 4.4 2.4 5.7l-1.1 4.2h12.4l-1.1-4.2c1.3-1.3 2.4-3.2 2.4-5.7 0-4.1-3.3-7.3-7.5-7.3z"
+            fill="#F3F4F6"
           />
+          <circle cx="12" cy="8.5" r="2.2" fill="#D33833" />
+          <path d="M9.5 13c1.5 1 3.5 1 5 0" stroke="#991B1B" strokeWidth="1.6" strokeLinecap="round" />
         </svg>
       );
     case "GitLab":
@@ -576,9 +581,14 @@ function SkillExactLogo({ name }) {
     case "ArgoCD":
       return (
         <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="8.8" stroke="#FB923C" strokeWidth="2" />
-          <path d="M8.3 15.2L12 7.4l3.7 7.8" stroke="#FDBA74" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <circle cx="12" cy="13.5" r="1.4" fill="#FB923C" />
+          <path
+            d="M12 3.2c3.5 3.2 5.5 6.4 5.5 9.6a5.5 5.5 0 0 1-11 0c0-3.2 2-6.4 5.5-9.6z"
+            fill="#EF7B4D"
+          />
+          <path
+            d="M12 8.2c1.8 1.8 2.8 3.5 2.8 5a2.8 2.8 0 0 1-5.6 0c0-1.5 1-3.2 2.8-5z"
+            fill="#FDE68A"
+          />
         </svg>
       );
     case "CI/CD":
@@ -591,12 +601,12 @@ function SkillExactLogo({ name }) {
       return (
         <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
           <path
-            d="M12 3.2c-2.6 0-4.2 2.4-4.2 5.7 0 2.4-1.4 4.3-2.3 6.2-.6 1.2.2 2.5 1.5 2.5h10c1.3 0 2.1-1.3 1.5-2.5-.9-1.9-2.3-3.8-2.3-6.2 0-3.3-1.6-5.7-4.2-5.7z"
+            d="M12 3c-2.5 0-4 2.2-4 5.2 0 2-1.2 3.6-2 5.2-.5 1 .2 2.1 1.3 2.1h9.4c1.1 0 1.8-1.1 1.3-2.1-.8-1.6-2-3.2-2-5.2 0-3-1.5-5.2-4-5.2z"
             fill="#FACC15"
           />
-          <circle cx="10.4" cy="9.2" r="0.9" fill="#000000" />
-          <circle cx="13.6" cy="9.2" r="0.9" fill="#000000" />
-          <path d="M10.5 11.6h3" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="10.5" cy="8.5" r="0.85" fill="#111827" />
+          <circle cx="13.5" cy="8.5" r="0.85" fill="#111827" />
+          <path d="M9 17.5l2 2M15 17.5l-2 2" stroke="#F59E0B" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
       );
     case "Bash":
@@ -631,72 +641,72 @@ function SkillExactLogo({ name }) {
 
 function DevOpsCenterInfinityLogo() {
   return (
-    <div className="pointer-events-none flex items-center justify-center py-2">
+    <div className="pointer-events-none flex items-center justify-center py-4">
       <div className="relative flex items-center justify-center">
         <div
           aria-hidden="true"
-          className="h-28 w-56 sm:h-32 sm:w-64 rounded-full bg-blue-500/25 blur-2xl"
+          className="h-40 w-80 sm:h-48 sm:w-96 rounded-full bg-blue-500/25 blur-3xl"
         />
         <svg
-          className="relative h-28 w-56 sm:h-32 sm:w-64 drop-shadow-[0_0_22px_rgba(59,130,246,0.85)]"
-          viewBox="0 0 320 150"
+          className="relative h-40 w-80 sm:h-48 sm:w-96 drop-shadow-[0_0_28px_rgba(59,130,246,0.9)]"
+          viewBox="0 0 360 170"
           fill="none"
         >
           <defs>
-            <linearGradient id="devOpsMetallicBlue" x1="20" y1="20" x2="300" y2="130" gradientUnits="userSpaceOnUse">
+            <linearGradient id="devOpsMetallicBlue" x1="20" y1="20" x2="340" y2="150" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#93C5FD" />
               <stop offset="25%" stopColor="#2563EB" />
               <stop offset="50%" stopColor="#E2E8F0" />
               <stop offset="75%" stopColor="#1D4ED8" />
               <stop offset="100%" stopColor="#60A5FA" />
             </linearGradient>
-            <linearGradient id="devOpsSilverHighlight" x1="0" y1="0" x2="320" y2="150" gradientUnits="userSpaceOnUse">
+            <linearGradient id="devOpsSilverHighlight" x1="0" y1="0" x2="360" y2="170" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#F8FAFC" stopOpacity="0.95" />
-              <stop offset="50%" stopColor="#38BDF8" stopOpacity="0.85" />
+              <stop offset="50%" stopColor="#38BDF8" stopOpacity="0.9" />
               <stop offset="100%" stopColor="#E2E8F0" stopOpacity="0.95" />
             </linearGradient>
           </defs>
 
           <path
-            d="M225 42c54 0 54 66 0 66-46 0-74-66-130-66-54 0-54 66 0 66 56 0 84-66 130-66z"
+            d="M252 46c60 0 60 76 0 76-52 0-84-76-144-76-60 0-60 76 0 76 62 0 92-76 144-76z"
             stroke="#1E40AF"
-            strokeWidth="22"
+            strokeWidth="26"
             strokeLinecap="round"
             strokeLinejoin="round"
             opacity="0.55"
           />
           <path
-            d="M225 42c54 0 54 66 0 66-46 0-74-66-130-66-54 0-54 66 0 66 56 0 84-66 130-66z"
+            d="M252 46c60 0 60 76 0 76-52 0-84-76-144-76-60 0-60 76 0 76 62 0 92-76 144-76z"
             stroke="url(#devOpsMetallicBlue)"
-            strokeWidth="16"
+            strokeWidth="19"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
-            d="M225 42c54 0 54 66 0 66-46 0-74-66-130-66-54 0-54 66 0 66 56 0 84-66 130-66z"
+            d="M252 46c60 0 60 76 0 76-52 0-84-76-144-76-60 0-60 76 0 76 62 0 92-76 144-76z"
             stroke="url(#devOpsSilverHighlight)"
-            strokeWidth="3"
+            strokeWidth="3.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
 
           <text
-            x="92"
-            y="82"
+            x="104"
+            y="92"
             textAnchor="middle"
             fill="#FFFFFF"
-            fontSize="24"
+            fontSize="28"
             fontWeight="700"
             fontFamily="system-ui, -apple-system, sans-serif"
           >
             Dev
           </text>
           <text
-            x="228"
-            y="82"
+            x="256"
+            y="92"
             textAnchor="middle"
             fill="#FFFFFF"
-            fontSize="24"
+            fontSize="28"
             fontWeight="700"
             fontFamily="system-ui, -apple-system, sans-serif"
           >
@@ -1184,7 +1194,7 @@ export default function App() {
       <main className="relative z-10 w-full px-3 sm:px-5 py-8 lg:pr-36">
         {activePage === "home" && (
           <>
-            <section className="relative flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+            <section className="relative flex flex-col justify-between gap-6 lg:grid lg:grid-cols-[1.15fr_1fr] lg:items-center">
               <div className="max-w-2xl">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12]">
                   Hi, I&apos;m{" "}
@@ -1209,34 +1219,34 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => setActivePage("projects")}
-                    className="ios-primary-btn cursor-pointer rounded-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 px-6 py-2.5 text-sm font-semibold text-white"
+                    className="ios-primary-btn cursor-pointer rounded-full bg-gradient-to-r from-emerald-700 via-green-700 to-emerald-800 px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(21,128,61,0.45)]"
                   >
                     View My Projects →
                   </button>
                 </div>
               </div>
 
-              <div className="lg:mr-4">
+              <div className="flex items-center justify-center">
                 <DevOpsCenterInfinityLogo />
               </div>
 
               <FarRightSideStreakFlow />
             </section>
 
-            {/* 3 Interactive iOS Glass Highlight Cards */}
+            {/* 3 Interactive Glass Highlight Buttons */}
             <section className="mt-8 grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-3">
               <button
                 type="button"
                 onClick={() => toggleInfoCard("experience")}
-                className={`ios-glass-card flex cursor-pointer items-center gap-4 rounded-2xl border p-4 text-left ${
+                className={`ios-glass-pill flex cursor-pointer items-center gap-3.5 rounded-full px-5 py-3 text-left transition ${
                   activeInfoCard === "experience"
-                    ? "border-amber-300 shadow-[0_0_24px_rgba(251,191,36,0.28)]"
-                    : "border-amber-400/35 hover:border-amber-300/75"
+                    ? "ios-glass-pill-active text-white"
+                    : "text-neutral-200 hover:text-white"
                 }`}
               >
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-sky-400/25 bg-sky-500/15 text-sky-400">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white">
                   <svg
-                    className="h-6 w-6"
+                    className="h-4 w-4"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -1246,77 +1256,43 @@ export default function App() {
                     <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
                   </svg>
                 </div>
-                <div>
-                  <div className="text-lg font-bold text-amber-200 leading-tight">
-                    4 Years
-                  </div>
-                  <div className="mt-0.5 text-xs text-neutral-300">
-                    DevOps Experience
-                  </div>
-                </div>
+                <span className="text-xs sm:text-sm font-medium">
+                  4 Years DevOps Engineer
+                </span>
               </button>
 
               <button
                 type="button"
                 onClick={() => toggleInfoCard("cloud")}
-                className={`ios-glass-card flex cursor-pointer items-center gap-4 rounded-2xl border p-4 text-left ${
+                className={`ios-glass-pill flex cursor-pointer items-center gap-3.5 rounded-full px-5 py-3 text-left transition ${
                   activeInfoCard === "cloud"
-                    ? "border-purple-400 shadow-[0_0_24px_rgba(168,85,247,0.3)]"
-                    : "border-purple-500/40 hover:border-purple-400/75"
+                    ? "ios-glass-pill-active text-white"
+                    : "text-neutral-200 hover:text-white"
                 }`}
               >
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-purple-400/25 bg-purple-500/15 text-purple-400">
-                  <svg
-                    className="h-6 w-6"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M17.5 19H7a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18.1 8.5 4 4 0 0 1 17.5 19z" />
-                    <path d="M12 17v-5" />
-                    <path d="m9.5 14.5 2.5-2.5 2.5 2.5" />
-                  </svg>
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white">
+                  <SkillExactLogo name="AWS" />
                 </div>
-                <div>
-                  <div className="text-lg font-bold text-purple-300 leading-tight">
-                    AWS &amp; Azure
-                  </div>
-                  <div className="mt-0.5 text-xs text-neutral-300">
-                    Cloud Expertise
-                  </div>
-                </div>
+                <span className="text-xs sm:text-sm font-medium">
+                  AWS &amp; Azure Cloud
+                </span>
               </button>
 
               <button
                 type="button"
                 onClick={() => toggleInfoCard("kubernetes")}
-                className={`ios-glass-card flex cursor-pointer items-center gap-4 rounded-2xl border p-4 text-left ${
+                className={`ios-glass-pill flex cursor-pointer items-center gap-3.5 rounded-full px-5 py-3 text-left transition ${
                   activeInfoCard === "kubernetes"
-                    ? "border-sky-300 shadow-[0_0_24px_rgba(56,189,248,0.3)]"
-                    : "border-sky-400/40 hover:border-sky-300/75"
+                    ? "ios-glass-pill-active text-white"
+                    : "text-neutral-200 hover:text-white"
                 }`}
               >
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-sky-400/25 bg-sky-500/15 text-sky-400">
-                  <svg
-                    className="h-6 w-6"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <polygon points="12 2 20.5 7 20.5 17 12 22 3.5 17 3.5 7" />
-                    <circle cx="12" cy="12" r="2.5" />
-                  </svg>
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white">
+                  <SkillExactLogo name="Kubernetes" />
                 </div>
-                <div>
-                  <div className="text-lg font-bold text-sky-300 leading-tight">
-                    Kubernetes
-                  </div>
-                  <div className="mt-0.5 text-xs text-neutral-300">
-                    Orchestration
-                  </div>
-                </div>
+                <span className="text-xs sm:text-sm font-medium">
+                  Kubernetes Orchestration
+                </span>
               </button>
             </section>
 
