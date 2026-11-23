@@ -179,7 +179,7 @@ function FarRightSideStreakFlow() {
   return (
     <div
       ref={columnRef}
-      className="pointer-events-none relative hidden lg:flex flex-col items-end gap-1.5 pr-1 select-none"
+      className="pointer-events-none hidden lg:flex lg:fixed lg:right-3 lg:top-24 lg:z-20 flex-col items-end gap-1.5 pr-0.5 select-none"
     >
       <div
         ref={streakRef}
@@ -603,9 +603,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="lg:-mr-4 xl:-mr-10">
-                <FarRightSideStreakFlow />
-              </div>
+              <FarRightSideStreakFlow />
             </section>
 
             {/* 3 Interactive iOS Glass Highlight Cards */}
