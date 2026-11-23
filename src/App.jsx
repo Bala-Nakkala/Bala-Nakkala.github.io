@@ -481,6 +481,22 @@ const SKILL_DETAILS = {
   },
 };
 
+function SimpleCloudSymbol() {
+  return (
+    <svg
+      className="h-4 w-4 shrink-0 text-sky-300"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M17.5 19H7a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18.1 8.5 4 4 0 0 1 17.5 19z" />
+    </svg>
+  );
+}
+
 function SkillExactLogo({ name }) {
   switch (name) {
     case "AWS":
@@ -637,85 +653,6 @@ function SkillExactLogo({ name }) {
     default:
       return null;
   }
-}
-
-function DevOpsCenterInfinityLogo() {
-  return (
-    <div className="pointer-events-none flex items-center justify-center py-4">
-      <div className="relative flex items-center justify-center">
-        <div
-          aria-hidden="true"
-          className="h-40 w-80 sm:h-48 sm:w-96 rounded-full bg-blue-500/25 blur-3xl"
-        />
-        <svg
-          className="relative h-40 w-80 sm:h-48 sm:w-96 drop-shadow-[0_0_28px_rgba(59,130,246,0.9)]"
-          viewBox="0 0 360 170"
-          fill="none"
-        >
-          <defs>
-            <linearGradient id="devOpsMetallicBlue" x1="20" y1="20" x2="340" y2="150" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#93C5FD" />
-              <stop offset="25%" stopColor="#2563EB" />
-              <stop offset="50%" stopColor="#E2E8F0" />
-              <stop offset="75%" stopColor="#1D4ED8" />
-              <stop offset="100%" stopColor="#60A5FA" />
-            </linearGradient>
-            <linearGradient id="devOpsSilverHighlight" x1="0" y1="0" x2="360" y2="170" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#F8FAFC" stopOpacity="0.95" />
-              <stop offset="50%" stopColor="#38BDF8" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#E2E8F0" stopOpacity="0.95" />
-            </linearGradient>
-          </defs>
-
-          <path
-            d="M252 46c60 0 60 76 0 76-52 0-84-76-144-76-60 0-60 76 0 76 62 0 92-76 144-76z"
-            stroke="#1E40AF"
-            strokeWidth="26"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.55"
-          />
-          <path
-            d="M252 46c60 0 60 76 0 76-52 0-84-76-144-76-60 0-60 76 0 76 62 0 92-76 144-76z"
-            stroke="url(#devOpsMetallicBlue)"
-            strokeWidth="19"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M252 46c60 0 60 76 0 76-52 0-84-76-144-76-60 0-60 76 0 76 62 0 92-76 144-76z"
-            stroke="url(#devOpsSilverHighlight)"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-
-          <text
-            x="104"
-            y="92"
-            textAnchor="middle"
-            fill="#FFFFFF"
-            fontSize="28"
-            fontWeight="700"
-            fontFamily="system-ui, -apple-system, sans-serif"
-          >
-            Dev
-          </text>
-          <text
-            x="256"
-            y="92"
-            textAnchor="middle"
-            fill="#FFFFFF"
-            fontSize="28"
-            fontWeight="700"
-            fontFamily="system-ui, -apple-system, sans-serif"
-          >
-            Ops
-          </text>
-        </svg>
-      </div>
-    </div>
-  );
 }
 
 const MULTI_COLOR_GRADIENTS = [
@@ -1203,11 +1140,11 @@ export default function App() {
                 </h1>
 
                 <div className="mt-4 flex flex-wrap items-center gap-2.5 text-sm sm:text-base font-medium">
-                  <span className="text-orange-400">Automating</span>
+                  <span className="text-red-500">Automating</span>
                   <span className="text-neutral-500">•</span>
-                  <span className="text-emerald-400">Deploying</span>
+                  <span className="text-green-600">Deploying</span>
                   <span className="text-neutral-500">•</span>
-                  <span className="text-blue-400">Scaling</span>
+                  <span className="text-orange-400">Scaling</span>
                 </div>
 
                 <p className="mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-neutral-300">
@@ -1226,9 +1163,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-center">
-                <DevOpsCenterInfinityLogo />
-              </div>
+              <div className="hidden lg:block" aria-hidden="true" />
 
               <FarRightSideStreakFlow />
             </section>
@@ -1271,7 +1206,7 @@ export default function App() {
                 }`}
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white">
-                  <SkillExactLogo name="AWS" />
+                  <SimpleCloudSymbol />
                 </div>
                 <span className="text-xs sm:text-sm font-medium">
                   AWS &amp; Azure Cloud
