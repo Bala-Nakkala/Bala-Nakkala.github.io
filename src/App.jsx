@@ -26,11 +26,25 @@ const INITIAL_HOSTED_RESUMES = [
   },
 ];
 
+const PIPELINE_FLOW_STEPS = [
+  { name: "Code", sub: "Source Commit" },
+  { name: "PR", sub: "Pull Request" },
+  { name: "Sonar Scan", sub: "Code Quality" },
+  { name: "Build", sub: "Artifact Build" },
+  { name: "Docker Build", sub: "Container Image" },
+  { name: "Trivy", sub: "Security Scan" },
+  { name: "ECR", sub: "Image Registry" },
+  { name: "GitOps Repo", sub: "Manifests" },
+  { name: "Argo CD", sub: "Continuous Sync" },
+  { name: "Kubernetes", sub: "Cluster Runtime" },
+  { name: "User", sub: "Live Traffic" },
+];
+
 const USER_PROJECTS = [
   {
     name: "Bala-Nakkala.github.io",
-    tag: "React • Vite • Cloudflare CI/CD",
-    desc: "Personal DevOps portfolio deployed via GitHub and Cloudflare with automated builds and glassmorphic UI.",
+    tag: "React • Vite • GitHub Pages",
+    desc: "Personal DevOps portfolio deployed via GitHub Actions and GitHub Pages with glassmorphic UI.",
     githubUrl: "https://github.com/Bala-Nakkala/Bala-Nakkala.github.io",
   },
   {
@@ -107,6 +121,117 @@ const MULTI_COLOR_GRADIENTS = [
   "linear-gradient(90deg, #4ADE80 0%, #22D3EE 50%, #C084FC 100%)",
   "linear-gradient(90deg, #FB923C 0%, #F472B6 50%, #60A5FA 100%)",
 ];
+
+function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" />
+    </svg>
+  );
+}
+
+function WaterFlowArchitectureCard() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % PIPELINE_FLOW_STEPS.length);
+    }, 900);
+    return () => clearInterval(timer);
+  }, []);
+
+  const currentStep = PIPELINE_FLOW_STEPS[activeIndex];
+
+  return (
+    <div className="relative overflow-hidden rounded-3xl border border-cyan-300/30 bg-gradient-to-br from-sky-500/[0.14] via-blue-600/[0.08] to-cyan-400/[0.12] p-5 shadow-[0_0_40px_rgba(14,165,233,0.18)] backdrop-blur-2xl">
+      {/* Subtle animated water glow orbs */}
+      <div
+        className="pointer-events-none absolute -top-14 -right-10 h-40 w-40 rounded-full bg-cyan-400/20 blur-2xl"
+        style={{ animation: "waterPulse 5s ease-in-out infinite" }}
+      />
+      <div
+        className="pointer-events-none absolute -bottom-16 -left-10 h-44 w-44 rounded-full bg-blue-500/20 blur-2xl"
+        style={{ animation: "waterPulse 6.5s ease-in-out infinite reverse" }}
+      />
+
+      <style>{`
+        @keyframes waterPulse {
+          0%, 100% { transform: translate(0px, 0px) scale(1); opacity: 0.7; }
+          50% { transform: translate(-10px, 8px) scale(1.12); opacity: 1; }
+        }
+        @keyframes waterStream {
+          0% { transform: translateX(-120%); }
+          100% { transform: translateX(240%); }
+        }
+      `}</style>
+
+      <div className="relative z-10 flex items-center justify-between gap-2 border-b border-cyan-300/15 pb-3">
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-widest text-cyan-300">
+            Code to User Flow
+          </div>
+          <div className="mt-0.5 text-sm font-bold text-white">
+            {currentStep.name}{" "}
+            <span className="font-normal text-cyan-200/80">
+              • {currentStep.sub}
+            </span>
+          </div>
+        </div>
+        <span className="rounded-full border border-cyan-300/35 bg-cyan-400/15 px-2.5 py-0.5 text-[11px] font-semibold text-cyan-200">
+          {activeIndex + 1}/{PIPELINE_FLOW_STEPS.length}
+        </span>
+      </div>
+
+      {/* Animated water stream bar */}
+      <div className="relative z-10 mt-3 h-1.5 w-full overflow-hidden rounded-full bg-sky-950/80">
+        <div
+          className="h-full w-1/2 rounded-full bg-gradient-to-r from-transparent via-cyan-300 to-blue-400"
+          style={{ animation: "waterStream 2.4s linear infinite" }}
+        />
+      </div>
+
+      {/* Compact clean flow path: Code -> PR -> ... -> User */}
+      <div className="relative z-10 mt-4 flex flex-wrap items-center gap-1.5">
+        {PIPELINE_FLOW_STEPS.map((step, idx) => {
+          const isCurrent = idx === activeIndex;
+          const isPassed = idx < activeIndex;
+          return (
+            <React.Fragment key={step.name}>
+              <div
+                className={`rounded-xl border px-2.5 py-1.5 text-xs font-semibold transition-all duration-300 ${
+                  isCurrent
+                    ? "scale-105 border-cyan-200 bg-gradient-to-r from-cyan-400/35 to-blue-500/35 text-white shadow-[0_0_16px_rgba(34,211,238,0.45)]"
+                    : isPassed
+                      ? "border-sky-400/35 bg-sky-500/15 text-cyan-100"
+                      : "border-white/10 bg-white/[0.04] text-neutral-300"
+                }`}
+              >
+                {step.name}
+              </div>
+              {idx < PIPELINE_FLOW_STEPS.length - 1 && (
+                <span
+                  className={`text-xs font-bold transition-colors duration-300 ${
+                    isCurrent || isPassed ? "text-cyan-300" : "text-sky-300/40"
+                  }`}
+                >
+                  →
+                </span>
+              )}
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function SpaceDotsBackground() {
   const canvasRef = useRef(null);
@@ -417,16 +542,8 @@ export default function App() {
             }}
             className="flex cursor-pointer items-center gap-3 text-left transition-transform duration-200 hover:scale-[1.01] active:scale-[0.97]"
           >
-            <div className="ios-glass-pill flex h-11 w-11 items-center justify-center rounded-2xl border-sky-400/40 shadow-[0_0_22px_rgba(56,189,248,0.28)]">
-              <svg
-                className="h-7 w-7 text-sky-400"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M17.5 19H7a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18.1 8.5 4 4 0 0 1 17.5 19z" />
-              </svg>
+            <div className="ios-glass-pill flex h-11 w-11 items-center justify-center rounded-full border-sky-400/40 text-sky-300 shadow-[0_0_22px_rgba(56,189,248,0.28)]">
+              <DevOpsInfinityLogo className="h-6 w-6" />
             </div>
             <div>
               <div className="text-base sm:text-lg font-bold tracking-tight leading-none">
@@ -509,7 +626,9 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="min-h-[340px] lg:col-span-5" />
+              <div className="lg:col-span-5">
+                <WaterFlowArchitectureCard />
+              </div>
             </section>
 
             {/* 3 Interactive iOS Glass Highlight Cards */}
