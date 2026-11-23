@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { id: "resume", label: "Resume" },
 ];
 
+// మీకు మాత్రమే Remove & Upload ఆప్షన్స్ కనిపించడానికి Admin PIN (మీకు నచ్చినట్లు మార్చుకోవచ్చు)
 const ADMIN_PIN = "balu123";
 
 const INITIAL_HOSTED_RESUMES = [
@@ -25,13 +26,30 @@ const INITIAL_HOSTED_RESUMES = [
   },
 ];
 
+// Notebook sketch order:
+// Row 1 (L -> R): Code -> PR -> Sonar Scan -> Build
+// Row 2 (R -> L): Docker Build <- Trivy <- ECR <- Git Ops
+// Row 3 (L -> R): Argo CD -> Kubernetes -> Ingress -> User
 const PIPELINE_ROWS = [
-  ["Code", "PR", "Sonar Scan", "Build"],
-  ["Docker Build", "Trivy", "ECR", "GitOps Repo"],
-  ["Argo CD", "Kubernetes", "Ingress", "User"],
+  { dir: "ltr", items: ["Code", "PR", "Sonar Scan", "Build"] },
+  { dir: "rtl", items: ["Docker Build", "Trivy", "ECR", "Git Ops"] },
+  { dir: "ltr", items: ["Argo CD", "Kubernetes", "Ingress", "User"] },
 ];
 
-const ALL_PIPELINE_STEPS = PIPELINE_ROWS.flat();
+const ORDERED_STAGES = [
+  "Code",
+  "PR",
+  "Sonar Scan",
+  "Build",
+  "Docker Build",
+  "Trivy",
+  "ECR",
+  "Git Ops",
+  "Argo CD",
+  "Kubernetes",
+  "Ingress",
+  "User",
+];
 
 const USER_PROJECTS = [
   {
@@ -131,90 +149,95 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-function WaterFlowArchitectureCanvas() {
+function SingleWaterArrow({ direction = "right" }) {
+  const rotation =
+    direction === "left"
+      ? "rotate-180"
+      : direction === "down"
+        ? "rotate-90"
+        : "";
+
+  return (
+    <span
+      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 text-slate-950 shadow-[0_0_16px_rgba(34,211,238,0.85)] transition-transform duration-200 ${rotation}`}
+    >
+      <svg
+        className="h-3.5 w-3.5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M5 12h14" />
+        <path d="m13 6 6 6-6 6" />
+      </svg>
+    </span>
+  );
+}
+
+function SingleArrowFlowCanvas() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % ALL_PIPELINE_STEPS.length);
-    }, 650);
+      setActiveIndex((prev) => (prev + 1) % ORDERED_STAGES.length);
+    }, 750);
     return () => clearInterval(timer);
   }, []);
 
+  const activeStage = ORDERED_STAGES[activeIndex];
+  const isTransitioningBetweenRows =
+    activeIndex === 3 || activeIndex === 7;
+  const downArrowRow = activeIndex === 3 ? 0 : activeIndex === 7 ? 1 : -1;
+
   return (
     <div className="relative select-none py-2">
-      <style>{`
-        @keyframes waterPulseRight {
-          0% { transform: translateX(-100%); opacity: 0.2; }
-          50% { opacity: 1; }
-          100% { transform: translateX(220%); opacity: 0.2; }
-        }
-        @keyframes waterPulseDown {
-          0% { transform: translateY(-100%); opacity: 0.2; }
-          50% { opacity: 1; }
-          100% { transform: translateY(220%); opacity: 0.2; }
-        }
-      `}</style>
-
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3.5">
         {PIPELINE_ROWS.map((row, rowIdx) => {
-          const isReverseRow = rowIdx === 1;
-          const orderedRow = isReverseRow ? [...row].reverse() : row;
+          const isRtl = row.dir === "rtl";
+          const displayItems = isRtl ? [...row.items].reverse() : row.items;
+          const arrowDir = isRtl ? "left" : "right";
 
           return (
             <React.Fragment key={rowIdx}>
-              <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
-                {orderedRow.map((stepName, colIdx) => {
-                  const globalIdx = ALL_PIPELINE_STEPS.indexOf(stepName);
-                  const isActive = globalIdx === activeIndex;
-                  const isPassed = globalIdx < activeIndex;
-                  const showHorizontalConnector = colIdx < orderedRow.length - 1;
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                {displayItems.map((stageName) => {
+                  const isHighlighted = activeStage === stageName;
+                  const showArrowOnStage =
+                    isHighlighted && !isTransitioningBetweenRows;
 
                   return (
-                    <React.Fragment key={stepName}>
-                      <div
-                        className={`rounded-full border px-3 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
-                          isActive
-                            ? "scale-105 border-cyan-200 bg-cyan-400/25 text-white shadow-[0_0_18px_rgba(34,211,238,0.55)]"
-                            : isPassed
-                              ? "border-sky-400/45 bg-sky-500/15 text-cyan-100"
-                              : "border-sky-300/20 bg-sky-950/35 text-sky-100/80"
-                        }`}
-                      >
-                        {stepName}
-                      </div>
-
-                      {showHorizontalConnector && (
-                        <div className="relative h-[2px] flex-1 min-w-[14px] overflow-hidden rounded-full bg-sky-400/20">
-                          <div
-                            className={`h-full w-1/2 rounded-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-400 ${
-                              isActive || isPassed ? "opacity-100" : "opacity-60"
-                            }`}
-                            style={{
-                              animation: "waterPulseRight 1.5s linear infinite",
-                            }}
-                          />
-                        </div>
+                    <div
+                      key={stageName}
+                      className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
+                        isHighlighted
+                          ? "scale-105 border-cyan-200 bg-gradient-to-r from-cyan-400/30 via-sky-400/25 to-blue-500/30 text-white shadow-[0_0_22px_rgba(34,211,238,0.65)]"
+                          : "border-sky-300/20 bg-sky-950/30 text-sky-100/75"
+                      }`}
+                    >
+                      {showArrowOnStage && isRtl && (
+                        <SingleWaterArrow direction={arrowDir} />
                       )}
-                    </React.Fragment>
+                      <span>{stageName}</span>
+                      {showArrowOnStage && !isRtl && (
+                        <SingleWaterArrow direction={arrowDir} />
+                      )}
+                    </div>
                   );
                 })}
               </div>
 
               {rowIdx < PIPELINE_ROWS.length - 1 && (
                 <div
-                  className={`flex ${
-                    rowIdx === 0 ? "justify-end pr-5" : "justify-start pl-5"
+                  className={`flex h-6 items-center ${
+                    rowIdx === 0 ? "justify-end pr-8" : "justify-start pl-8"
                   }`}
                 >
-                  <div className="relative h-5 w-[2px] overflow-hidden rounded-full bg-sky-400/25">
-                    <div
-                      className="h-1/2 w-full rounded-full bg-gradient-to-b from-cyan-300 via-sky-400 to-blue-400"
-                      style={{
-                        animation: "waterPulseDown 1.3s linear infinite",
-                      }}
-                    />
-                  </div>
+                  {isTransitioningBetweenRows && downArrowRow === rowIdx && (
+                    <SingleWaterArrow direction="down" />
+                  )}
                 </div>
               )}
             </React.Fragment>
@@ -619,7 +642,7 @@ export default function App() {
               </div>
 
               <div className="lg:col-span-6">
-                <WaterFlowArchitectureCanvas />
+                <SingleArrowFlowCanvas />
               </div>
             </section>
 
