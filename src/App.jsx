@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { id: "resume", label: "Resume" },
 ];
 
-
+// మీకు మాత్రమే Remove & Upload ఆప్షన్స్ కనిపించడానికి Admin PIN (మీకు నచ్చినట్లు మార్చుకోవచ్చు)
 const ADMIN_PIN = "balu123";
 
 const INITIAL_HOSTED_RESUMES = [
@@ -26,7 +26,6 @@ const INITIAL_HOSTED_RESUMES = [
   },
 ];
 
-// Order:
 // Row 1 (L -> R): Code -> PR -> Sonar Scan -> Build
 // Row 2 (R -> L): Docker Build <- Trivy <- ECR <- Git Ops
 // Row 3 (L -> R): Argo CD -> Kubernetes -> Ingress -> User
@@ -36,19 +35,19 @@ const PIPELINE_ROWS = [
   { dir: "ltr", items: ["Argo CD", "Kubernetes", "Ingress", "User"] },
 ];
 
-const ORDERED_STAGES = [
-  "Code",
-  "PR",
-  "Sonar Scan",
-  "Build",
-  "Docker Build",
-  "Trivy",
-  "ECR",
-  "Git Ops",
-  "Argo CD",
-  "Kubernetes",
-  "Ingress",
-  "User",
+// Ordered gap steps between stages from Code to User
+const GAP_SEGMENTS = [
+  { row: 0, dir: "ltr", afterIdx: 0 }, // Code -> PR gap
+  { row: 0, dir: "ltr", afterIdx: 1 }, // PR -> Sonar Scan gap
+  { row: 0, dir: "ltr", afterIdx: 2 }, // Sonar Scan -> Build gap
+  { row: 0, dir: "down" },              // Build -> Docker Build row gap
+  { row: 1, dir: "rtl", afterIdx: 0 }, // Docker Build -> Trivy gap
+  { row: 1, dir: "rtl", afterIdx: 1 }, // Trivy -> ECR gap
+  { row: 1, dir: "rtl", afterIdx: 2 }, // ECR -> Git Ops gap
+  { row: 1, dir: "down" },              // Git Ops -> Argo CD row gap
+  { row: 2, dir: "ltr", afterIdx: 0 }, // Argo CD -> Kubernetes gap
+  { row: 2, dir: "ltr", afterIdx: 1 }, // Kubernetes -> Ingress gap
+  { row: 2, dir: "ltr", afterIdx: 2 }, // Ingress -> User gap
 ];
 
 const USER_PROJECTS = [
@@ -149,67 +148,89 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-// Single star-like water streak (~80-95px / ~2-3cm visual streak) moving along the ordered stages
-function SingleStarStreakFlow() {
-  const [activeIndex, setActiveIndex] = useState(0);
+// Single star-trail moving inside the gaps between stages from Code to User
+function SingleGapStarFlow() {
+  const [stepIdx, setStepIdx] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % ORDERED_STAGES.length);
-    }, 650);
+      setStepIdx((prev) => (prev + 1) % GAP_SEGMENTS.length);
+    }, 550);
     return () => clearInterval(timer);
   }, []);
 
-  const activeStage = ORDERED_STAGES[activeIndex];
+  const currentGap = GAP_SEGMENTS[stepIdx];
+
+  const renderHorizontalStar = (dir) => {
+    const isRtl = dir === "rtl";
+    return (
+      <span
+        aria-hidden="true"
+        className={`inline-flex items-center ${isRtl ? "flex-row-reverse" : "flex-row"}`}
+      >
+        <span
+          className={`h-[2px] w-7 sm:w-9 rounded-full ${
+            isRtl
+              ? "bg-gradient-to-l from-cyan-200 via-sky-400/75 to-transparent"
+              : "bg-gradient-to-r from-transparent via-sky-400/75 to-cyan-200"
+          }`}
+        />
+        <span className="h-2 w-2 rounded-full bg-white shadow-[0_0_8px_#67e8f9,0_0_14px_#22d3ee]" />
+      </span>
+    );
+  };
+
+  const renderVerticalStar = () => (
+    <span aria-hidden="true" className="inline-flex flex-col items-center">
+      <span className="h-4 w-[2px] rounded-full bg-gradient-to-b from-transparent via-sky-400/75 to-cyan-200" />
+      <span className="h-2 w-2 rounded-full bg-white shadow-[0_0_8px_#67e8f9,0_0_14px_#22d3ee]" />
+    </span>
+  );
 
   return (
     <div className="relative select-none py-2">
-      <div className="flex flex-col gap-3.5">
+      <div className="flex flex-col gap-3">
         {PIPELINE_ROWS.map((row, rowIdx) => {
           const isRtl = row.dir === "rtl";
           const displayItems = isRtl ? [...row.items].reverse() : row.items;
+          const showRowDownGap =
+            currentGap.dir === "down" && currentGap.row === rowIdx;
 
           return (
-            <div
-              key={rowIdx}
-              className="flex flex-wrap items-center justify-between gap-2.5"
-            >
-              {displayItems.map((stageName) => {
-                const isHighlighted = activeStage === stageName;
+            <React.Fragment key={rowIdx}>
+              <div className="flex flex-wrap items-center justify-between gap-1.5">
+                {displayItems.map((stageName, visualIdx) => {
+                  const showAfterThisGap =
+                    currentGap.row === rowIdx &&
+                    currentGap.dir === row.dir &&
+                    currentGap.afterIdx === visualIdx;
 
-                return (
-                  <div
-                    key={stageName}
-                    className={`relative inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
-                      isHighlighted
-                        ? "scale-105 border-cyan-200 bg-gradient-to-r from-cyan-400/30 via-sky-400/25 to-blue-500/30 text-white shadow-[0_0_22px_rgba(34,211,238,0.65)]"
-                        : "border-sky-300/20 bg-sky-950/30 text-sky-100/75"
-                    }`}
-                  >
-                    {isHighlighted && (
-                      <span
-                        aria-hidden="true"
-                        className={`inline-flex items-center ${
-                          isRtl ? "flex-row-reverse" : "flex-row"
-                        }`}
-                      >
-                        {/* Fading star tail (~2-3cm visual length) */}
-                        <span
-                          className={`h-[2.5px] w-16 sm:w-20 rounded-full ${
-                            isRtl
-                              ? "bg-gradient-to-l from-cyan-200 via-sky-400/70 to-transparent"
-                              : "bg-gradient-to-r from-transparent via-sky-400/70 to-cyan-200"
-                          }`}
-                        />
-                        {/* Bright star head */}
-                        <span className="h-2 w-2 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_18px_#22d3ee]" />
-                      </span>
-                    )}
-                    <span>{stageName}</span>
-                  </div>
-                );
-              })}
-            </div>
+                  return (
+                    <React.Fragment key={stageName}>
+                      <div className="rounded-full border border-sky-300/25 bg-sky-950/35 px-3.5 py-1.5 text-xs font-semibold text-sky-100/90 backdrop-blur-md">
+                        {stageName}
+                      </div>
+
+                      {visualIdx < displayItems.length - 1 && (
+                        <div className="flex min-w-[38px] sm:min-w-[48px] flex-1 items-center justify-center px-1">
+                          {showAfterThisGap && renderHorizontalStar(row.dir)}
+                        </div>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+
+              {rowIdx < PIPELINE_ROWS.length - 1 && (
+                <div
+                  className={`flex h-6 items-center ${
+                    rowIdx === 0 ? "justify-end pr-8" : "justify-start pl-8"
+                  }`}
+                >
+                  {showRowDownGap && renderVerticalStar()}
+                </div>
+              )}
+            </React.Fragment>
           );
         })}
       </div>
@@ -611,7 +632,7 @@ export default function App() {
               </div>
 
               <div className="lg:col-span-6">
-                <SingleStarStreakFlow />
+                <SingleGapStarFlow />
               </div>
             </section>
 
