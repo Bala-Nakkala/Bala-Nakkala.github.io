@@ -26,13 +26,20 @@ const INITIAL_HOSTED_RESUMES = [
   },
 ];
 
-// Row 1 (L -> R): Code -> PR -> Sonar Scan -> Build
-// Row 2 (R -> L): Docker Build <- Trivy <- ECR <- Git Ops
-// Row 3 (L -> R): Argo CD -> Kubernetes -> Ingress -> [Button] -> User
-const PIPELINE_ROWS = [
-  { dir: "ltr", items: ["Code", "PR", "Sonar Scan", "Build"] },
-  { dir: "rtl", items: ["Docker Build", "Trivy", "ECR", "Git Ops"] },
-  { dir: "ltr", items: ["Argo CD", "Kubernetes", "Ingress", "__BUTTON__", "User"] },
+// Flow order: Code -> PR -> Sonar Scan -> Build -> Docker Build -> Trivy -> ECR -> GitOps Repo -> Argo CD -> Kubernetes -> Ingress -> User
+const FLOW_STAGES = [
+  "Code",
+  "PR",
+  "Sonar Scan",
+  "Build",
+  "Docker Build",
+  "Trivy",
+  "ECR",
+  "GitOps Repo",
+  "Argo CD",
+  "Kubernetes",
+  "Ingress",
+  "User",
 ];
 
 const USER_PROJECTS = [
@@ -133,127 +140,51 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-// Neuron-like particle flow along relationship edges, triggered when clicking the button before User
-function NeuronEdgeFlow() {
-  const [flowActive, setFlowActive] = useState(false);
-  const [pulseTick, setPulseTick] = useState(0);
+// Clean glowing stage flow inspired by the Git visual sequence (no round pill boxes, no button)
+function GlowingStageSequenceFlow() {
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (!flowActive) return;
-    const interval = setInterval(() => {
-      setPulseTick((prev) => (prev + 1) % 12);
-    }, 320);
-    return () => clearInterval(interval);
-  }, [flowActive]);
-
-  const handleTriggerFlow = () => {
-    setFlowActive(true);
-    setPulseTick(0);
-  };
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % FLOW_STAGES.length);
+    }, 850);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className="relative select-none py-2">
-      <style>{`
-        @keyframes neuronPulseLtr {
-          0% { left: -12%; opacity: 0.15; }
-          45% { opacity: 1; }
-          100% { left: 104%; opacity: 0.15; }
-        }
-        @keyframes neuronPulseRtl {
-          0% { right: -12%; opacity: 0.15; }
-          45% { opacity: 1; }
-          100% { right: 104%; opacity: 0.15; }
-        }
-        @keyframes neuronPulseDown {
-          0% { top: -25%; opacity: 0.15; }
-          50% { opacity: 1; }
-          100% { top: 105%; opacity: 0.15; }
-        }
-      `}</style>
-
-      <div className="flex flex-col gap-2.5">
-        {PIPELINE_ROWS.map((row, rowIdx) => {
-          const isRtl = row.dir === "rtl";
-          const displayItems = isRtl ? [...row.items].reverse() : row.items;
+    <div className="relative select-none py-1">
+      <div className="flex flex-col">
+        {FLOW_STAGES.map((stage, idx) => {
+          const isCurrent = idx === activeIndex;
+          const isLast = idx === FLOW_STAGES.length - 1;
 
           return (
-            <React.Fragment key={rowIdx}>
-              <div className="flex flex-wrap items-center justify-between gap-1.5">
-                {displayItems.map((item, idx) => {
-                  const isButtonNode = item === "__BUTTON__";
-                  const showEdgeAfter = idx < displayItems.length - 1;
-
-                  return (
-                    <React.Fragment key={`${item}-${idx}`}>
-                      {isButtonNode ? (
-                        <button
-                          type="button"
-                          onClick={handleTriggerFlow}
-                          className={`cursor-pointer rounded-full border px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
-                            flowActive
-                              ? "border-cyan-200 bg-gradient-to-r from-cyan-400/35 via-sky-400/30 to-blue-500/35 text-white shadow-[0_0_20px_rgba(34,211,238,0.65)]"
-                              : "border-cyan-300/50 bg-cyan-500/15 text-cyan-200 hover:border-cyan-200 hover:bg-cyan-400/25 hover:text-white"
-                          }`}
-                        >
-                          {flowActive ? "Flowing • Replay" : "See Flow"}
-                        </button>
-                      ) : (
-                        <div
-                          className={`rounded-full border px-3 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
-                            flowActive && (pulseTick + idx + rowIdx * 4) % 4 === 0
-                              ? "border-cyan-200/80 bg-cyan-400/20 text-white shadow-[0_0_14px_rgba(34,211,238,0.45)]"
-                              : "border-sky-300/20 bg-sky-950/30 text-sky-100/85"
-                          }`}
-                        >
-                          {item}
-                        </div>
-                      )}
-
-                      {showEdgeAfter && (
-                        <div
-                          className={`relative h-[2px] flex-1 min-w-[16px] overflow-hidden rounded-full transition-colors duration-200 ${
-                            flowActive ? "bg-cyan-400/35" : "bg-sky-300/15"
-                          }`}
-                        >
-                          {flowActive && (
-                            <span
-                              aria-hidden="true"
-                              className="absolute top-1/2 h-2 w-5 -translate-y-1/2 rounded-full bg-gradient-to-r from-transparent via-cyan-200 to-white shadow-[0_0_10px_#22d3ee]"
-                              style={{
-                                animation: `${
-                                  isRtl ? "neuronPulseRtl" : "neuronPulseLtr"
-                                } ${1.1 + idx * 0.12}s linear infinite`,
-                              }}
-                            />
-                          )}
-                        </div>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
+            <React.Fragment key={stage}>
+              <div
+                className={`flex items-center justify-between border-l-2 py-1.5 pl-4 pr-3 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 ${
+                  isCurrent
+                    ? "border-cyan-300 bg-gradient-to-r from-cyan-400/15 via-sky-500/10 to-transparent text-white shadow-[inset_10px_0_18px_-8px_rgba(34,211,238,0.65)]"
+                    : "border-sky-400/20 text-sky-100/75"
+                }`}
+              >
+                <span className={isCurrent ? "text-cyan-200" : ""}>{stage}</span>
+                <span
+                  className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                    isCurrent
+                      ? "scale-125 bg-cyan-200 shadow-[0_0_10px_#22d3ee,0_0_18px_#38bdf8]"
+                      : "bg-sky-400/30"
+                  }`}
+                />
               </div>
 
-              {rowIdx < PIPELINE_ROWS.length - 1 && (
-                <div
-                  className={`flex h-5 items-center ${
-                    rowIdx === 0 ? "justify-end pr-7" : "justify-start pl-7"
-                  }`}
-                >
-                  <div
-                    className={`relative h-full w-[2px] overflow-hidden rounded-full transition-colors duration-200 ${
-                      flowActive ? "bg-cyan-400/35" : "bg-sky-300/15"
-                    }`}
-                  >
-                    {flowActive && (
-                      <span
-                        aria-hidden="true"
-                        className="absolute left-1/2 h-3.5 w-2 -translate-x-1/2 rounded-full bg-gradient-to-b from-transparent via-cyan-200 to-white shadow-[0_0_10px_#22d3ee]"
-                        style={{
-                          animation: "neuronPulseDown 1s linear infinite",
-                        }}
-                      />
-                    )}
-                  </div>
+              {!isLast && (
+                <div className="relative ml-[3px] h-2.5 w-[2px] bg-sky-400/15">
+                  {isCurrent && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute -left-[3px] top-0 h-2 w-2 rounded-full bg-white shadow-[0_0_8px_#67e8f9,0_0_14px_#22d3ee]"
+                    />
+                  )}
                 </div>
               )}
             </React.Fragment>
@@ -626,7 +557,7 @@ export default function App() {
         {activePage === "home" && (
           <>
             <section className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
-              <div className="lg:col-span-6">
+              <div className="lg:col-span-7">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12]">
                   Hi, I&apos;m{" "}
                   <span style={blendedGradientStyle}>Bala Krishna</span>
@@ -657,8 +588,8 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="lg:col-span-6">
-                <NeuronEdgeFlow />
+              <div className="lg:col-span-5">
+                <GlowingStageSequenceFlow />
               </div>
             </section>
 
