@@ -28,26 +28,11 @@ const INITIAL_HOSTED_RESUMES = [
 
 // Row 1 (L -> R): Code -> PR -> Sonar Scan -> Build
 // Row 2 (R -> L): Docker Build <- Trivy <- ECR <- Git Ops
-// Row 3 (L -> R): Argo CD -> Kubernetes -> Ingress -> User
+// Row 3 (L -> R): Argo CD -> Kubernetes -> Ingress -> [Button] -> User
 const PIPELINE_ROWS = [
   { dir: "ltr", items: ["Code", "PR", "Sonar Scan", "Build"] },
   { dir: "rtl", items: ["Docker Build", "Trivy", "ECR", "Git Ops"] },
-  { dir: "ltr", items: ["Argo CD", "Kubernetes", "Ingress", "User"] },
-];
-
-// Ordered gap steps between stages from Code to User
-const GAP_SEGMENTS = [
-  { row: 0, dir: "ltr", afterIdx: 0 }, // Code -> PR gap
-  { row: 0, dir: "ltr", afterIdx: 1 }, // PR -> Sonar Scan gap
-  { row: 0, dir: "ltr", afterIdx: 2 }, // Sonar Scan -> Build gap
-  { row: 0, dir: "down" },              // Build -> Docker Build row gap
-  { row: 1, dir: "rtl", afterIdx: 0 }, // Docker Build -> Trivy gap
-  { row: 1, dir: "rtl", afterIdx: 1 }, // Trivy -> ECR gap
-  { row: 1, dir: "rtl", afterIdx: 2 }, // ECR -> Git Ops gap
-  { row: 1, dir: "down" },              // Git Ops -> Argo CD row gap
-  { row: 2, dir: "ltr", afterIdx: 0 }, // Argo CD -> Kubernetes gap
-  { row: 2, dir: "ltr", afterIdx: 1 }, // Kubernetes -> Ingress gap
-  { row: 2, dir: "ltr", afterIdx: 2 }, // Ingress -> User gap
+  { dir: "ltr", items: ["Argo CD", "Kubernetes", "Ingress", "__BUTTON__", "User"] },
 ];
 
 const USER_PROJECTS = [
@@ -148,72 +133,99 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-// Single star-trail moving inside the gaps between stages from Code to User
-function SingleGapStarFlow() {
-  const [stepIdx, setStepIdx] = useState(0);
+// Neuron-like particle flow along relationship edges, triggered when clicking the button before User
+function NeuronEdgeFlow() {
+  const [flowActive, setFlowActive] = useState(false);
+  const [pulseTick, setPulseTick] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setStepIdx((prev) => (prev + 1) % GAP_SEGMENTS.length);
-    }, 550);
-    return () => clearInterval(timer);
-  }, []);
+    if (!flowActive) return;
+    const interval = setInterval(() => {
+      setPulseTick((prev) => (prev + 1) % 12);
+    }, 320);
+    return () => clearInterval(interval);
+  }, [flowActive]);
 
-  const currentGap = GAP_SEGMENTS[stepIdx];
-
-  const renderHorizontalStar = (dir) => {
-    const isRtl = dir === "rtl";
-    return (
-      <span
-        aria-hidden="true"
-        className={`inline-flex items-center ${isRtl ? "flex-row-reverse" : "flex-row"}`}
-      >
-        <span
-          className={`h-[2px] w-7 sm:w-9 rounded-full ${
-            isRtl
-              ? "bg-gradient-to-l from-cyan-200 via-sky-400/75 to-transparent"
-              : "bg-gradient-to-r from-transparent via-sky-400/75 to-cyan-200"
-          }`}
-        />
-        <span className="h-2 w-2 rounded-full bg-white shadow-[0_0_8px_#67e8f9,0_0_14px_#22d3ee]" />
-      </span>
-    );
+  const handleTriggerFlow = () => {
+    setFlowActive(true);
+    setPulseTick(0);
   };
-
-  const renderVerticalStar = () => (
-    <span aria-hidden="true" className="inline-flex flex-col items-center">
-      <span className="h-4 w-[2px] rounded-full bg-gradient-to-b from-transparent via-sky-400/75 to-cyan-200" />
-      <span className="h-2 w-2 rounded-full bg-white shadow-[0_0_8px_#67e8f9,0_0_14px_#22d3ee]" />
-    </span>
-  );
 
   return (
     <div className="relative select-none py-2">
-      <div className="flex flex-col gap-3">
+      <style>{`
+        @keyframes neuronPulseLtr {
+          0% { left: -12%; opacity: 0.15; }
+          45% { opacity: 1; }
+          100% { left: 104%; opacity: 0.15; }
+        }
+        @keyframes neuronPulseRtl {
+          0% { right: -12%; opacity: 0.15; }
+          45% { opacity: 1; }
+          100% { right: 104%; opacity: 0.15; }
+        }
+        @keyframes neuronPulseDown {
+          0% { top: -25%; opacity: 0.15; }
+          50% { opacity: 1; }
+          100% { top: 105%; opacity: 0.15; }
+        }
+      `}</style>
+
+      <div className="flex flex-col gap-2.5">
         {PIPELINE_ROWS.map((row, rowIdx) => {
           const isRtl = row.dir === "rtl";
           const displayItems = isRtl ? [...row.items].reverse() : row.items;
-          const showRowDownGap =
-            currentGap.dir === "down" && currentGap.row === rowIdx;
 
           return (
             <React.Fragment key={rowIdx}>
               <div className="flex flex-wrap items-center justify-between gap-1.5">
-                {displayItems.map((stageName, visualIdx) => {
-                  const showAfterThisGap =
-                    currentGap.row === rowIdx &&
-                    currentGap.dir === row.dir &&
-                    currentGap.afterIdx === visualIdx;
+                {displayItems.map((item, idx) => {
+                  const isButtonNode = item === "__BUTTON__";
+                  const showEdgeAfter = idx < displayItems.length - 1;
 
                   return (
-                    <React.Fragment key={stageName}>
-                      <div className="rounded-full border border-sky-300/25 bg-sky-950/35 px-3.5 py-1.5 text-xs font-semibold text-sky-100/90 backdrop-blur-md">
-                        {stageName}
-                      </div>
+                    <React.Fragment key={`${item}-${idx}`}>
+                      {isButtonNode ? (
+                        <button
+                          type="button"
+                          onClick={handleTriggerFlow}
+                          className={`cursor-pointer rounded-full border px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
+                            flowActive
+                              ? "border-cyan-200 bg-gradient-to-r from-cyan-400/35 via-sky-400/30 to-blue-500/35 text-white shadow-[0_0_20px_rgba(34,211,238,0.65)]"
+                              : "border-cyan-300/50 bg-cyan-500/15 text-cyan-200 hover:border-cyan-200 hover:bg-cyan-400/25 hover:text-white"
+                          }`}
+                        >
+                          {flowActive ? "Flowing • Replay" : "See Flow"}
+                        </button>
+                      ) : (
+                        <div
+                          className={`rounded-full border px-3 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
+                            flowActive && (pulseTick + idx + rowIdx * 4) % 4 === 0
+                              ? "border-cyan-200/80 bg-cyan-400/20 text-white shadow-[0_0_14px_rgba(34,211,238,0.45)]"
+                              : "border-sky-300/20 bg-sky-950/30 text-sky-100/85"
+                          }`}
+                        >
+                          {item}
+                        </div>
+                      )}
 
-                      {visualIdx < displayItems.length - 1 && (
-                        <div className="flex min-w-[38px] sm:min-w-[48px] flex-1 items-center justify-center px-1">
-                          {showAfterThisGap && renderHorizontalStar(row.dir)}
+                      {showEdgeAfter && (
+                        <div
+                          className={`relative h-[2px] flex-1 min-w-[16px] overflow-hidden rounded-full transition-colors duration-200 ${
+                            flowActive ? "bg-cyan-400/35" : "bg-sky-300/15"
+                          }`}
+                        >
+                          {flowActive && (
+                            <span
+                              aria-hidden="true"
+                              className="absolute top-1/2 h-2 w-5 -translate-y-1/2 rounded-full bg-gradient-to-r from-transparent via-cyan-200 to-white shadow-[0_0_10px_#22d3ee]"
+                              style={{
+                                animation: `${
+                                  isRtl ? "neuronPulseRtl" : "neuronPulseLtr"
+                                } ${1.1 + idx * 0.12}s linear infinite`,
+                              }}
+                            />
+                          )}
                         </div>
                       )}
                     </React.Fragment>
@@ -223,11 +235,25 @@ function SingleGapStarFlow() {
 
               {rowIdx < PIPELINE_ROWS.length - 1 && (
                 <div
-                  className={`flex h-6 items-center ${
-                    rowIdx === 0 ? "justify-end pr-8" : "justify-start pl-8"
+                  className={`flex h-5 items-center ${
+                    rowIdx === 0 ? "justify-end pr-7" : "justify-start pl-7"
                   }`}
                 >
-                  {showRowDownGap && renderVerticalStar()}
+                  <div
+                    className={`relative h-full w-[2px] overflow-hidden rounded-full transition-colors duration-200 ${
+                      flowActive ? "bg-cyan-400/35" : "bg-sky-300/15"
+                    }`}
+                  >
+                    {flowActive && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute left-1/2 h-3.5 w-2 -translate-x-1/2 rounded-full bg-gradient-to-b from-transparent via-cyan-200 to-white shadow-[0_0_10px_#22d3ee]"
+                        style={{
+                          animation: "neuronPulseDown 1s linear infinite",
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
               )}
             </React.Fragment>
@@ -632,7 +658,7 @@ export default function App() {
               </div>
 
               <div className="lg:col-span-6">
-                <SingleGapStarFlow />
+                <NeuronEdgeFlow />
               </div>
             </section>
 
