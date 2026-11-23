@@ -139,29 +139,29 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-// Single-line horizontal star-streak moving smoothly across all stages from Code to User
-function SmoothHorizontalMiddleStreak() {
-  const trackRef = useRef(null);
+// Vertical top-to-bottom flow along the right edge under Let's Connect, with star-streak passing underneath labels
+function VerticalRightEdgeFlow() {
+  const columnRef = useRef(null);
   const streakRef = useRef(null);
 
   useEffect(() => {
     let animId;
     let startTime = null;
-    const cycleDuration = 7500; // smooth full travel from Code to User
+    const cycleDuration = 7000;
 
     const animate = (now) => {
       if (!startTime) startTime = now;
       const elapsed = (now - startTime) % cycleDuration;
       const progress = elapsed / cycleDuration;
 
-      const track = trackRef.current;
+      const col = columnRef.current;
       const streak = streakRef.current;
 
-      if (track && streak) {
-        const width = track.scrollWidth || track.offsetWidth;
-        const streakWidth = streak.offsetWidth || 84;
-        const x = -streakWidth + progress * (width + streakWidth * 1.25);
-        streak.style.transform = `translate3d(${x}px, -50%, 0)`;
+      if (col && streak) {
+        const height = col.offsetHeight || 340;
+        const streakHeight = streak.offsetHeight || 68;
+        const y = -streakHeight + progress * (height + streakHeight * 1.2);
+        streak.style.transform = `translate3d(0, ${y}px, 0)`;
       }
 
       animId = requestAnimationFrame(animate);
@@ -172,33 +172,30 @@ function SmoothHorizontalMiddleStreak() {
   }, []);
 
   return (
-    <div className="w-full overflow-x-auto py-4 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div
+      ref={columnRef}
+      className="pointer-events-none relative hidden lg:flex flex-col items-end gap-1.5 pr-1 select-none"
+    >
+      {/* Moving star-streak behind the labels (z-0) */}
       <div
-        ref={trackRef}
-        className="relative inline-flex min-w-full flex-nowrap items-center justify-between gap-1.5 sm:gap-2 overflow-hidden py-1"
+        ref={streakRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 right-6 z-0 flex flex-col items-center will-change-transform"
+        style={{ transform: "translate3d(0, -80px, 0)" }}
       >
-        {FLOW_STAGES.map((stage, idx) => (
-          <React.Fragment key={stage}>
-            <span className="whitespace-nowrap text-[10px] sm:text-[11px] xl:text-xs font-semibold tracking-tight text-sky-100/90">
-              {stage}
-            </span>
-            {idx < FLOW_STAGES.length - 1 && (
-              <span className="text-[10px] text-sky-300/35">›</span>
-            )}
-          </React.Fragment>
-        ))}
-
-        {/* Smooth moving star-streak passing right across the middle of all stages from Code to User */}
-        <div
-          ref={streakRef}
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 left-0 flex items-center will-change-transform"
-          style={{ transform: "translate3d(-100px, -50%, 0)" }}
-        >
-          <span className="h-[2.5px] w-16 sm:w-20 rounded-full bg-gradient-to-r from-transparent via-sky-400/75 to-cyan-200" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_20px_#22d3ee]" />
-        </div>
+        <span className="w-[2px] h-12 rounded-full bg-gradient-to-b from-transparent via-sky-400/75 to-cyan-200" />
+        <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_20px_#22d3ee]" />
       </div>
+
+      {/* Stage labels above the streak (z-10) */}
+      {FLOW_STAGES.map((stage) => (
+        <span
+          key={stage}
+          className="relative z-10 text-[11px] font-semibold tracking-wide text-sky-100/85"
+        >
+          {stage}
+        </span>
+      ))}
     </div>
   );
 }
@@ -564,8 +561,8 @@ export default function App() {
       <main className="relative z-10 mx-auto max-w-7xl px-6 py-8">
         {activePage === "home" && (
           <>
-            <section className="grid grid-cols-1 items-center gap-6 lg:grid-cols-12">
-              <div className="lg:col-span-5">
+            <section className="relative flex flex-col justify-between gap-8 lg:flex-row lg:items-start">
+              <div className="max-w-2xl">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12]">
                   Hi, I&apos;m{" "}
                   <span style={blendedGradientStyle}>Bala Krishna</span>
@@ -596,9 +593,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="lg:col-span-7">
-                <SmoothHorizontalMiddleStreak />
-              </div>
+              <VerticalRightEdgeFlow />
             </section>
 
             {/* 3 Interactive iOS Glass Highlight Cards */}
