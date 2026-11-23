@@ -139,28 +139,35 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-// Vertical top-to-bottom flow along the right edge under Let's Connect, with star-streak passing underneath labels
-function VerticalRightEdgeFlow() {
+// Far-right vertical flow where the streak moves alongside the stages and highlights the active stage
+function FarRightSideStreakFlow() {
   const columnRef = useRef(null);
   const streakRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     let animId;
     let startTime = null;
-    const cycleDuration = 7000;
+    const cycleDuration = 7200;
 
     const animate = (now) => {
       if (!startTime) startTime = now;
       const elapsed = (now - startTime) % cycleDuration;
       const progress = elapsed / cycleDuration;
 
+      const idx = Math.min(
+        FLOW_STAGES.length - 1,
+        Math.floor(progress * FLOW_STAGES.length)
+      );
+      setActiveIndex(idx);
+
       const col = columnRef.current;
       const streak = streakRef.current;
 
       if (col && streak) {
         const height = col.offsetHeight || 340;
-        const streakHeight = streak.offsetHeight || 68;
-        const y = -streakHeight + progress * (height + streakHeight * 1.2);
+        const streakHeight = streak.offsetHeight || 64;
+        const y = -streakHeight + progress * (height + streakHeight * 1.15);
         streak.style.transform = `translate3d(0, ${y}px, 0)`;
       }
 
@@ -174,28 +181,35 @@ function VerticalRightEdgeFlow() {
   return (
     <div
       ref={columnRef}
-      className="pointer-events-none relative hidden lg:flex flex-col items-end gap-1.5 pr-1 select-none"
+      className="pointer-events-none relative hidden lg:flex flex-col items-end gap-1.5 pr-0 select-none"
     >
-      {/* Moving star-streak behind the labels (z-0) */}
+      {/* Moving star-streak running alongside (to the right of) the stage names */}
       <div
         ref={streakRef}
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 right-6 z-0 flex flex-col items-center will-change-transform"
+        className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
         style={{ transform: "translate3d(0, -80px, 0)" }}
       >
-        <span className="w-[2px] h-12 rounded-full bg-gradient-to-b from-transparent via-sky-400/75 to-cyan-200" />
+        <span className="w-[2px] h-11 rounded-full bg-gradient-to-b from-transparent via-sky-400/75 to-cyan-200" />
         <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_20px_#22d3ee]" />
       </div>
 
-      {/* Stage labels above the streak (z-10) */}
-      {FLOW_STAGES.map((stage) => (
-        <span
-          key={stage}
-          className="relative z-10 text-[11px] font-semibold tracking-wide text-sky-100/85"
-        >
-          {stage}
-        </span>
-      ))}
+      {/* Stage labels (no boxes) highlighting when reached */}
+      {FLOW_STAGES.map((stage, idx) => {
+        const isHighlighted = idx === activeIndex;
+        return (
+          <span
+            key={stage}
+            className={`pr-4 text-[11px] font-semibold tracking-wide transition-all duration-200 ${
+              isHighlighted
+                ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.85)]"
+                : "text-sky-100/75"
+            }`}
+          >
+            {stage}
+          </span>
+        );
+      })}
     </div>
   );
 }
@@ -593,7 +607,7 @@ export default function App() {
                 </div>
               </div>
 
-              <VerticalRightEdgeFlow />
+              <FarRightSideStreakFlow />
             </section>
 
             {/* 3 Interactive iOS Glass Highlight Cards */}
