@@ -115,6 +115,372 @@ const KEY_SKILL_PILLS = [
   { name: "Monitoring", dot: "bg-amber-500" },
 ];
 
+const SKILL_DETAILS = {
+  AWS: {
+    title: "AWS (Amazon Web Services) — Why Used in Production",
+    subtitle: "Core AWS services used for scalable, high-availability infrastructure",
+    items: [
+      {
+        heading: "EC2",
+        points: [
+          "Virtual servers used to host application nodes, bastion/jump hosts, and build/runner machines.",
+          "Supports auto-scaling and flexible instance sizing based on workload demand.",
+        ],
+      },
+      {
+        heading: "ECR",
+        points: [
+          "Private container image registry used to store versioned Docker/Kaniko application images.",
+          "Integrates directly with IAM and Kubernetes/EKS for fast, secure image pulls.",
+        ],
+      },
+      {
+        heading: "EKS",
+        points: [
+          "Managed Kubernetes control plane used to run containerized microservices in production.",
+          "Handles high availability, pod scaling, rolling updates, and self-healing workloads.",
+        ],
+      },
+      {
+        heading: "S3",
+        points: [
+          "Durable object storage used for backups, artifacts, logs, and static/release files.",
+          "Provides versioning, lifecycle rules, and high durability across availability zones.",
+        ],
+      },
+      {
+        heading: "IAM",
+        points: [
+          "Controls permissions, roles, and policies so services and users only get least-privilege access.",
+          "Eliminates hardcoded credentials by attaching IAM roles to compute and CI/CD workloads.",
+        ],
+      },
+      {
+        heading: "Lambda Functions",
+        points: [
+          "Serverless event-driven functions used for lightweight automation tasks without managing servers.",
+          "Runs small operational triggers, scheduled jobs, or webhook handlers on demand.",
+        ],
+      },
+      {
+        heading: "PostgreSQL",
+        points: [
+          "Reliable relational database used to store structured transactional and application data.",
+          "Supports ACID consistency, backups, and high availability for production services.",
+        ],
+      },
+    ],
+  },
+  Azure: {
+    title: "Microsoft Azure — Why Used & Core Services",
+    subtitle: "Key Azure components and why they are used in cloud & DevOps setups",
+    items: [
+      {
+        heading: "Azure Resource Manager (ARM)",
+        points: [
+          "Control and management layer that organizes resources into Resource Groups and deploys them consistently.",
+          "Enables declarative templates, access control, tagging, and lifecycle management.",
+        ],
+      },
+      {
+        heading: "AKS (Kubernetes / EKS equivalent)",
+        points: [
+          "Managed Kubernetes service used to deploy, scale, and manage containerized applications.",
+          "Simplifies cluster upgrades, node scaling, and workload orchestration.",
+        ],
+      },
+      {
+        heading: "Entra ID",
+        points: [
+          "Identity and access management service used for authentication, single sign-on, and role access.",
+          "Replaces traditional IAM in Azure with Entra ID users, groups, and RBAC permissions.",
+        ],
+      },
+      {
+        heading: "Storage Accounts",
+        points: [
+          "Unified storage service for blobs, file shares, queues, and tables.",
+          "Used for storing files, backups, logs, and configuration data securely.",
+        ],
+      },
+      {
+        heading: "Azure Functions",
+        points: [
+          "Serverless compute used to execute small event-driven tasks automatically.",
+          "Scales automatically with incoming events without managing underlying VMs.",
+        ],
+      },
+      {
+        heading: "Virtual Machines",
+        points: [
+          "On-demand Linux/Windows virtual servers used for custom workloads and infrastructure tasks.",
+          "Gives full OS control when dedicated VM-level configuration is required.",
+        ],
+      },
+    ],
+  },
+  Kubernetes: {
+    title: "Kubernetes — Why Used & Production Benefits",
+    subtitle: "Container orchestration for high availability and automated rollouts",
+    items: [
+      {
+        heading: "Why We Use Kubernetes",
+        points: [
+          "Automates deploying, scaling, and managing containerized applications across cluster nodes.",
+          "Provides service discovery, load balancing, health checks, and automatic pod restarts.",
+        ],
+      },
+      {
+        heading: "Production Benefits",
+        points: [
+          "High availability and zero/low-downtime rolling deployments or rollbacks.",
+          "Efficient resource utilization and fast horizontal scaling during peak traffic.",
+        ],
+      },
+    ],
+  },
+  Docker: {
+    title: "Docker — Containerization in DevOps",
+    subtitle: "Consistent packaging from local development to production",
+    items: [
+      {
+        heading: "Why Docker Is Used",
+        points: [
+          "Packages applications and dependencies into lightweight, portable container images.",
+          "Eliminates 'works on my machine' issues across dev, staging, and production.",
+        ],
+      },
+      {
+        heading: "Main Components",
+        points: [
+          "Dockerfile for defining reproducible build steps and base images.",
+          "Docker Engine & Images/Containers for fast build, run, and registry distribution.",
+        ],
+      },
+    ],
+  },
+  Jenkins: {
+    title: "Jenkins — CI/CD Automation",
+    subtitle: "Automated build, test, and release pipelines",
+    items: [
+      {
+        heading: "Why Jenkins Is Used",
+        points: [
+          "Automates code checkout, building, testing, security checks, and deployment steps.",
+          "Speeds up releases and reduces manual human errors in software delivery.",
+        ],
+      },
+      {
+        heading: "Main Components",
+        points: [
+          "Jenkins Pipelines (Jenkinsfile) for defining multi-stage workflows as code.",
+          "Controller & Build Agents (static or dynamic Kubernetes agents) for executing jobs.",
+        ],
+      },
+    ],
+  },
+  GitLab: {
+    title: "GitLab — Source Control & CI/CD",
+    subtitle: "Code repositories, merge requests, and automated pipelines",
+    items: [
+      {
+        heading: "Why GitLab Is Used",
+        points: [
+          "Manages source code repositories, branch workflows, and code reviews in one place.",
+          "Supports automated CI/CD pipelines (`.gitlab-ci.yml`) and runners.",
+        ],
+      },
+      {
+        heading: "Main Components",
+        points: [
+          "GitLab Repositories & Merge Requests for version control and team collaboration.",
+          "GitLab CI/CD & Runners for automated testing and deployment stages.",
+        ],
+      },
+    ],
+  },
+  GitHub: {
+    title: "GitHub — Code Hosting & GitHub Actions",
+    subtitle: "Version control, pull requests, and workflow automation",
+    items: [
+      {
+        heading: "Why GitHub Is Used",
+        points: [
+          "Hosts code repositories, tracks changes, and streamlines pull request reviews.",
+          "Runs automated CI/CD and deployment workflows via GitHub Actions.",
+        ],
+      },
+      {
+        heading: "Main Components",
+        points: [
+          "Repositories, Branches & Pull Requests for collaborative code management.",
+          "GitHub Actions Workflows & Runners for automated builds and deployments.",
+        ],
+      },
+    ],
+  },
+  Ansible: {
+    title: "Ansible — Configuration Management",
+    subtitle: "Agentless server automation and consistent configuration",
+    items: [
+      {
+        heading: "Why Ansible Is Used",
+        points: [
+          "Automates server setup, package installation, and configuration across many machines.",
+          "Ensures idempotent (repeatable, consistent) state without needing agents on target nodes.",
+        ],
+      },
+      {
+        heading: "Main Components",
+        points: [
+          "Inventory & Playbooks (YAML) defining target hosts and automation tasks.",
+          "Roles & Modules for reusable configuration and rolling updates.",
+        ],
+      },
+    ],
+  },
+  Terraform: {
+    title: "Terraform — Infrastructure as Code (IaC)",
+    subtitle: "Declarative and repeatable cloud infrastructure provisioning",
+    items: [
+      {
+        heading: "Why Terraform Is Used",
+        points: [
+          "Provisions and manages cloud infrastructure using declarative configuration files.",
+          "Makes environments version-controlled, repeatable, and easy to audit or tear down.",
+        ],
+      },
+      {
+        heading: "Main Components",
+        points: [
+          "Providers & Resources (`.tf` files) for defining cloud services.",
+          "State File & Plan/Apply workflow for tracking and safely applying changes.",
+        ],
+      },
+    ],
+  },
+  ArgoCD: {
+    title: "ArgoCD — Declarative GitOps for Kubernetes",
+    subtitle: "Continuous delivery synced from Git to cluster state",
+    items: [
+      {
+        heading: "Why ArgoCD Is Used",
+        points: [
+          "Uses Git as the single source of truth to deploy and sync Kubernetes manifests.",
+          "Detects configuration drift and keeps live cluster state aligned with Git.",
+        ],
+      },
+      {
+        heading: "Main Components",
+        points: [
+          "Applications & GitOps Repo tracking desired Kubernetes manifests/Helm charts.",
+          "Sync & Health Controllers for automated rollouts, status tracking, and rollbacks.",
+        ],
+      },
+    ],
+  },
+  "CI/CD": {
+    title: "CI/CD — Continuous Integration & Continuous Delivery",
+    subtitle: "Fast, reliable, and automated software delivery pipeline",
+    items: [
+      {
+        heading: "Why CI/CD Is Used",
+        points: [
+          "Continuously integrates code changes and runs automated checks early.",
+          "Delivers tested releases faster and more safely to target environments.",
+        ],
+      },
+      {
+        heading: "Main Stages",
+        points: [
+          "Continuous Integration (CI): Code commit, build, unit/code/image checks.",
+          "Continuous Delivery/Deployment (CD): Automated rollout to staging and production.",
+        ],
+      },
+    ],
+  },
+  Linux: {
+    title: "Linux — Core OS for Servers & Containers",
+    subtitle: "Stability, performance, and control across cloud and on-prem",
+    items: [
+      {
+        heading: "Why Linux Is Used",
+        points: [
+          "Powers the vast majority of cloud servers, containers, and Kubernetes worker nodes.",
+          "Offers high stability, strong security controls, and lightweight performance.",
+        ],
+      },
+      {
+        heading: "Main Areas Used",
+        points: [
+          "File system, permissions, users/groups, and systemd service management.",
+          "Networking, process troubleshooting, and log inspection in production.",
+        ],
+      },
+    ],
+  },
+  Bash: {
+    title: "Bash — Shell Scripting & Task Automation",
+    subtitle: "Quick command-line automation for Linux and CI/CD pipelines",
+    items: [
+      {
+        heading: "Why Bash Is Used",
+        points: [
+          "Automates repetitive Linux commands, deployments, backups, and pipeline steps.",
+          "Runs directly in shells and CI/CD runners with minimal overhead.",
+        ],
+      },
+      {
+        heading: "Main Use Cases",
+        points: [
+          "Environment setup, log parsing, health checks, and exit-code error handling.",
+          "Chaining CLI tools like `git`, `docker`, `kubectl`, and cloud CLIs.",
+        ],
+      },
+    ],
+  },
+  Python: {
+    title: "Python — Automation, Scripting & Tooling",
+    subtitle: "Clean scripting for DevOps workflows, APIs, and checks",
+    items: [
+      {
+        heading: "Why Python Is Used",
+        points: [
+          "Automates operational tasks, API calls, file/data processing, and health checks.",
+          "Easy to read, maintain, and integrate with cloud SDKs and automation pipelines.",
+        ],
+      },
+      {
+        heading: "Main Use Cases",
+        points: [
+          "Infrastructure/cluster status checks, reporting, and automated alerts/issues.",
+          "Custom helper scripts for CI/CD and day-2 DevOps operations.",
+        ],
+      },
+    ],
+  },
+  Monitoring: {
+    title: "Monitoring — Observability, Metrics, Logs & Alerts",
+    subtitle: "Proactive visibility into system health and faster incident response",
+    items: [
+      {
+        heading: "Why Monitoring Is Used",
+        points: [
+          "Tracks CPU, memory, pod/node health, application logs, and service availability.",
+          "Helps detect issues early, alert teams quickly, and speed up root-cause analysis.",
+        ],
+      },
+      {
+        heading: "Main Components",
+        points: [
+          "Metrics & Dashboards (e.g., Prometheus & Grafana) for real-time health tracking.",
+          "Logs & Alerts (e.g., ELK Stack & Alertmanager) for debugging and incident alerts.",
+        ],
+      },
+    ],
+  },
+};
+
 const MULTI_COLOR_GRADIENTS = [
   "linear-gradient(90deg, #38BDF8 0%, #818CF8 48%, #E879F9 100%)",
   "linear-gradient(90deg, #F87171 0%, #FACC15 50%, #38BDF8 100%)",
@@ -427,6 +793,7 @@ function LinkedInLogo() {
 export default function App() {
   const [activePage, setActivePage] = useState("home");
   const [activeInfoCard, setActiveInfoCard] = useState(null);
+  const [activeSkill, setActiveSkill] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [hostedResumes, setHostedResumes] = useState(INITIAL_HOSTED_RESUMES);
   const [resumes, setResumes] = useState([]);
@@ -459,6 +826,10 @@ export default function App() {
 
   const toggleInfoCard = (key) => {
     setActiveInfoCard((prev) => (prev === key ? null : key));
+  };
+
+  const toggleSkill = (name) => {
+    setActiveSkill((prev) => (prev === name ? null : name));
   };
 
   const handleOwnerToggle = () => {
@@ -518,6 +889,8 @@ export default function App() {
       return prev.filter((item) => item.id !== id);
     });
   };
+
+  const currentSkillDetail = activeSkill ? SKILL_DETAILS[activeSkill] : null;
 
   return (
     <div className="relative min-h-screen w-full bg-black text-white">
@@ -901,16 +1274,65 @@ export default function App() {
               </div>
 
               <div className="flex flex-wrap items-center gap-2.5">
-                {KEY_SKILL_PILLS.map((skill) => (
-                  <span
-                    key={skill.name}
-                    className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-neutral-200 backdrop-blur-md"
-                  >
-                    <span className={`h-2 w-2 rounded-full ${skill.dot}`} />
-                    <span>{skill.name}</span>
-                  </span>
-                ))}
+                {KEY_SKILL_PILLS.map((skill) => {
+                  const isSkillOpen = activeSkill === skill.name;
+                  return (
+                    <button
+                      key={skill.name}
+                      type="button"
+                      onClick={() => toggleSkill(skill.name)}
+                      className={`flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-medium backdrop-blur-md transition ${
+                        isSkillOpen
+                          ? "border-sky-400 bg-sky-500/20 text-white shadow-[0_0_16px_rgba(56,189,248,0.3)]"
+                          : "border-white/15 bg-white/[0.04] text-neutral-200 hover:border-sky-400/50 hover:text-white"
+                      }`}
+                    >
+                      <span className={`h-2 w-2 rounded-full ${skill.dot}`} />
+                      <span>{skill.name}</span>
+                    </button>
+                  );
+                })}
               </div>
+
+              {currentSkillDetail && (
+                <div className="ios-glass-card mt-5 rounded-2xl border border-sky-400/35 p-6">
+                  <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-3">
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-sky-300">
+                        {currentSkillDetail.title}
+                      </h3>
+                      <p className="mt-0.5 text-xs text-neutral-400">
+                        {currentSkillDetail.subtitle}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setActiveSkill(null)}
+                      className="ios-glass-pill shrink-0 cursor-pointer rounded-full px-3.5 py-1 text-xs text-neutral-200"
+                    >
+                      Close ✕
+                    </button>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+                    {currentSkillDetail.items.map((block) => (
+                      <div
+                        key={block.heading}
+                        className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
+                      >
+                        <h4 className="text-sm font-bold text-white">
+                          {block.heading}
+                        </h4>
+                        <ul className="mt-2 list-disc space-y-1 pl-4 text-xs leading-relaxed text-neutral-300">
+                          {block.points.map((pt) => (
+                            <li key={pt}>{pt}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </section>
           </>
         )}
