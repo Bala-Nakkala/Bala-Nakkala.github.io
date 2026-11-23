@@ -26,7 +26,6 @@ const INITIAL_HOSTED_RESUMES = [
   },
 ];
 
-// Flow order: Code -> PR -> Sonar Scan -> Build -> Docker Build -> Trivy -> ECR -> GitOps Repo -> Argo CD -> Kubernetes -> Ingress -> User
 const FLOW_STAGES = [
   "Code",
   "PR",
@@ -140,56 +139,63 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-// Clean glowing stage flow inspired by the Git visual sequence (no round pill boxes, no button)
-function GlowingStageSequenceFlow() {
-  const [activeIndex, setActiveIndex] = useState(0);
+// Smooth continuous star-streak moving horizontally through the middle of the stage labels from Code to User
+function SmoothHorizontalMiddleStreak() {
+  const containerRef = useRef(null);
+  const streakRef = useRef(null);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % FLOW_STAGES.length);
-    }, 850);
-    return () => clearInterval(timer);
+    let animId;
+    let startTime = null;
+    const cycleDuration = 6500; // ms for smooth travel from Code to User
+
+    const animate = (now) => {
+      if (!startTime) startTime = now;
+      const elapsed = (now - startTime) % cycleDuration;
+      const progress = elapsed / cycleDuration; // 0 -> 1
+
+      const container = containerRef.current;
+      const streak = streakRef.current;
+
+      if (container && streak) {
+        const width = container.offsetWidth;
+        const streakWidth = streak.offsetWidth || 80;
+        const x = -streakWidth + progress * (width + streakWidth * 1.4);
+        streak.style.transform = `translate3d(${x}px, -50%, 0)`;
+      }
+
+      animId = requestAnimationFrame(animate);
+    };
+
+    animId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animId);
   }, []);
 
   return (
-    <div className="relative select-none py-1">
-      <div className="flex flex-col">
-        {FLOW_STAGES.map((stage, idx) => {
-          const isCurrent = idx === activeIndex;
-          const isLast = idx === FLOW_STAGES.length - 1;
+    <div
+      ref={containerRef}
+      className="relative flex w-full flex-wrap items-center gap-x-3 gap-y-2 overflow-hidden py-4 select-none"
+    >
+      {FLOW_STAGES.map((stage, idx) => (
+        <React.Fragment key={stage}>
+          <span className="text-xs sm:text-sm font-semibold tracking-wide text-sky-100/90">
+            {stage}
+          </span>
+          {idx < FLOW_STAGES.length - 1 && (
+            <span className="text-xs text-sky-300/35">›</span>
+          )}
+        </React.Fragment>
+      ))}
 
-          return (
-            <React.Fragment key={stage}>
-              <div
-                className={`flex items-center justify-between border-l-2 py-1.5 pl-4 pr-3 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 ${
-                  isCurrent
-                    ? "border-cyan-300 bg-gradient-to-r from-cyan-400/15 via-sky-500/10 to-transparent text-white shadow-[inset_10px_0_18px_-8px_rgba(34,211,238,0.65)]"
-                    : "border-sky-400/20 text-sky-100/75"
-                }`}
-              >
-                <span className={isCurrent ? "text-cyan-200" : ""}>{stage}</span>
-                <span
-                  className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                    isCurrent
-                      ? "scale-125 bg-cyan-200 shadow-[0_0_10px_#22d3ee,0_0_18px_#38bdf8]"
-                      : "bg-sky-400/30"
-                  }`}
-                />
-              </div>
-
-              {!isLast && (
-                <div className="relative ml-[3px] h-2.5 w-[2px] bg-sky-400/15">
-                  {isCurrent && (
-                    <span
-                      aria-hidden="true"
-                      className="absolute -left-[3px] top-0 h-2 w-2 rounded-full bg-white shadow-[0_0_8px_#67e8f9,0_0_14px_#22d3ee]"
-                    />
-                  )}
-                </div>
-              )}
-            </React.Fragment>
-          );
-        })}
+      {/* Smooth moving star-streak passing right across the middle line of the letters */}
+      <div
+        ref={streakRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 left-0 flex items-center will-change-transform"
+        style={{ transform: "translate3d(-100px, -50%, 0)" }}
+      >
+        <span className="h-[2.5px] w-16 sm:w-20 rounded-full bg-gradient-to-r from-transparent via-sky-400/70 to-cyan-200" />
+        <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_20px_#22d3ee]" />
       </div>
     </div>
   );
@@ -557,7 +563,7 @@ export default function App() {
         {activePage === "home" && (
           <>
             <section className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
-              <div className="lg:col-span-7">
+              <div className="lg:col-span-6">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12]">
                   Hi, I&apos;m{" "}
                   <span style={blendedGradientStyle}>Bala Krishna</span>
@@ -588,8 +594,8 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="lg:col-span-5">
-                <GlowingStageSequenceFlow />
+              <div className="lg:col-span-6">
+                <SmoothHorizontalMiddleStreak />
               </div>
             </section>
 
