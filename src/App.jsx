@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { id: "resume", label: "Resume" },
 ];
 
-// మీకు మాత్రమే Remove & Upload ఆప్షన్స్ కనిపించడానికి Admin PIN (మీకు నచ్చినట్లు మార్చుకోవచ్చు)
+
 const ADMIN_PIN = "balu123";
 
 const INITIAL_HOSTED_RESUMES = [
@@ -26,7 +26,7 @@ const INITIAL_HOSTED_RESUMES = [
   },
 ];
 
-// Notebook sketch order:
+// Order:
 // Row 1 (L -> R): Code -> PR -> Sonar Scan -> Build
 // Row 2 (R -> L): Docker Build <- Trivy <- ECR <- Git Ops
 // Row 3 (L -> R): Argo CD -> Kubernetes -> Ingress -> User
@@ -149,48 +149,18 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-function SingleWaterArrow({ direction = "right" }) {
-  const rotation =
-    direction === "left"
-      ? "rotate-180"
-      : direction === "down"
-        ? "rotate-90"
-        : "";
-
-  return (
-    <span
-      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 text-slate-950 shadow-[0_0_16px_rgba(34,211,238,0.85)] transition-transform duration-200 ${rotation}`}
-    >
-      <svg
-        className="h-3.5 w-3.5"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M5 12h14" />
-        <path d="m13 6 6 6-6 6" />
-      </svg>
-    </span>
-  );
-}
-
-function SingleArrowFlowCanvas() {
+// Single star-like water streak (~80-95px / ~2-3cm visual streak) moving along the ordered stages
+function SingleStarStreakFlow() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % ORDERED_STAGES.length);
-    }, 750);
+    }, 650);
     return () => clearInterval(timer);
   }, []);
 
   const activeStage = ORDERED_STAGES[activeIndex];
-  const isTransitioningBetweenRows =
-    activeIndex === 3 || activeIndex === 7;
-  const downArrowRow = activeIndex === 3 ? 0 : activeIndex === 7 ? 1 : -1;
 
   return (
     <div className="relative select-none py-2">
@@ -198,49 +168,48 @@ function SingleArrowFlowCanvas() {
         {PIPELINE_ROWS.map((row, rowIdx) => {
           const isRtl = row.dir === "rtl";
           const displayItems = isRtl ? [...row.items].reverse() : row.items;
-          const arrowDir = isRtl ? "left" : "right";
 
           return (
-            <React.Fragment key={rowIdx}>
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                {displayItems.map((stageName) => {
-                  const isHighlighted = activeStage === stageName;
-                  const showArrowOnStage =
-                    isHighlighted && !isTransitioningBetweenRows;
+            <div
+              key={rowIdx}
+              className="flex flex-wrap items-center justify-between gap-2.5"
+            >
+              {displayItems.map((stageName) => {
+                const isHighlighted = activeStage === stageName;
 
-                  return (
-                    <div
-                      key={stageName}
-                      className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
-                        isHighlighted
-                          ? "scale-105 border-cyan-200 bg-gradient-to-r from-cyan-400/30 via-sky-400/25 to-blue-500/30 text-white shadow-[0_0_22px_rgba(34,211,238,0.65)]"
-                          : "border-sky-300/20 bg-sky-950/30 text-sky-100/75"
-                      }`}
-                    >
-                      {showArrowOnStage && isRtl && (
-                        <SingleWaterArrow direction={arrowDir} />
-                      )}
-                      <span>{stageName}</span>
-                      {showArrowOnStage && !isRtl && (
-                        <SingleWaterArrow direction={arrowDir} />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {rowIdx < PIPELINE_ROWS.length - 1 && (
-                <div
-                  className={`flex h-6 items-center ${
-                    rowIdx === 0 ? "justify-end pr-8" : "justify-start pl-8"
-                  }`}
-                >
-                  {isTransitioningBetweenRows && downArrowRow === rowIdx && (
-                    <SingleWaterArrow direction="down" />
-                  )}
-                </div>
-              )}
-            </React.Fragment>
+                return (
+                  <div
+                    key={stageName}
+                    className={`relative inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md transition-all duration-200 ${
+                      isHighlighted
+                        ? "scale-105 border-cyan-200 bg-gradient-to-r from-cyan-400/30 via-sky-400/25 to-blue-500/30 text-white shadow-[0_0_22px_rgba(34,211,238,0.65)]"
+                        : "border-sky-300/20 bg-sky-950/30 text-sky-100/75"
+                    }`}
+                  >
+                    {isHighlighted && (
+                      <span
+                        aria-hidden="true"
+                        className={`inline-flex items-center ${
+                          isRtl ? "flex-row-reverse" : "flex-row"
+                        }`}
+                      >
+                        {/* Fading star tail (~2-3cm visual length) */}
+                        <span
+                          className={`h-[2.5px] w-16 sm:w-20 rounded-full ${
+                            isRtl
+                              ? "bg-gradient-to-l from-cyan-200 via-sky-400/70 to-transparent"
+                              : "bg-gradient-to-r from-transparent via-sky-400/70 to-cyan-200"
+                          }`}
+                        />
+                        {/* Bright star head */}
+                        <span className="h-2 w-2 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_18px_#22d3ee]" />
+                      </span>
+                    )}
+                    <span>{stageName}</span>
+                  </div>
+                );
+              })}
+            </div>
           );
         })}
       </div>
@@ -642,7 +611,7 @@ export default function App() {
               </div>
 
               <div className="lg:col-span-6">
-                <SingleArrowFlowCanvas />
+                <SingleStarStreakFlow />
               </div>
             </section>
 
