@@ -183,17 +183,17 @@ const SKILL_DETAILS = {
         ],
       },
       {
-        heading: "AKS (Kubernetes / EKS equivalent)",
+        heading: "AKS",
         points: [
-          "Managed Kubernetes service used to deploy, scale, and manage containerized applications.",
-          "Simplifies cluster upgrades, node scaling, and workload orchestration.",
+          "Azure Kubernetes Service used to deploy, scale, and manage containerized applications.",
+          "Simplifies cluster upgrades, node scaling, and workload orchestration on Azure.",
         ],
       },
       {
         heading: "Entra ID",
         points: [
           "Identity and access management service used for authentication, single sign-on, and role access.",
-          "Replaces traditional IAM in Azure with Entra ID users, groups, and RBAC permissions.",
+          "Manages Azure users, groups, and RBAC permissions.",
         ],
       },
       {
@@ -480,6 +480,110 @@ const SKILL_DETAILS = {
     ],
   },
 };
+
+function SkillClassicLogo({ name }) {
+  switch (name) {
+    case "AWS":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M17.5 19H7a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18.1 8.5 4 4 0 0 1 17.5 19z" />
+        </svg>
+      );
+    case "Azure":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-sky-400" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13.05 4.24L6.56 18.05 2 18.05 8.49 4.24zM14.2 5.45L10.8 14.3l5.7 5.46H22z" />
+        </svg>
+      );
+    case "Kubernetes":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polygon points="12 2 20.5 7 20.5 17 12 22 3.5 17 3.5 7" />
+          <circle cx="12" cy="12" r="2.2" />
+        </svg>
+      );
+    case "Docker":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="3" y="11" width="14" height="7" rx="1.5" />
+          <path d="M17 14h2.5a1.5 1.5 0 0 0 1.5-1.5V11" />
+          <path d="M6 11V8h3v3M10 11V8h3v3M14 11V8h2v3" />
+        </svg>
+      );
+    case "Jenkins":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="8" />
+          <circle cx="12" cy="10" r="2.5" />
+          <path d="M8.5 16.5c1-1.5 2.2-2 3.5-2s2.5.5 3.5 2" />
+        </svg>
+      );
+    case "GitLab":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-orange-500" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 21l-8.5-6.2 2.6-8.1L8.8 15h6.4l2.7-8.3 2.6 8.1z" />
+        </svg>
+      );
+    case "GitHub":
+      return <GitHubLogo className="h-3.5 w-3.5 shrink-0 text-neutral-200" />;
+    case "Ansible":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7l-4.5 10h2.2l1-2.5h5.2l-3.4-3.2L12 7z" />
+        </svg>
+      );
+    case "Terraform":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-purple-400" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M4 4l6 3.5v7L4 11V4zm7 4l6 3.5v7L11 15V8zm7 4l2 1.2v7L18 19v-7z" />
+        </svg>
+      );
+    case "ArgoCD":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="8" />
+          <path d="M8.5 14.5L12 7.5l3.5 7" />
+        </svg>
+      );
+    case "CI/CD":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M17 8l4 4-4 4" />
+          <path d="M7 16l-4-4 4-4" />
+          <path d="M14 4l-4 16" />
+        </svg>
+      );
+    case "Linux":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 3c-2.8 0-4.5 2.5-4.5 6 0 2.5-1.5 4.5-2.5 6.5-.6 1.2.2 2.5 1.5 2.5h11c1.3 0 2.1-1.3 1.5-2.5-1-2-2.5-4-2.5-6.5 0-3.5-1.7-6-4.5-6z" />
+        </svg>
+      );
+    case "Bash":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="3" y="4" width="18" height="16" rx="2" />
+          <path d="M7 9l3 3-3 3M12 15h5" />
+        </svg>
+      );
+    case "Python":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M9 4h6a3 3 0 0 1 3 3v3H9a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3z" />
+          <path d="M15 20H9a3 3 0 0 1-3-3v-3h9a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3z" />
+        </svg>
+      );
+    case "Monitoring":
+      return (
+        <svg className="h-3.5 w-3.5 shrink-0 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M3 12h4l2-5 4 10 2-5h6" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
 
 const MULTI_COLOR_GRADIENTS = [
   "linear-gradient(90deg, #38BDF8 0%, #818CF8 48%, #E879F9 100%)",
@@ -1288,6 +1392,7 @@ export default function App() {
                       }`}
                     >
                       <span className={`h-2 w-2 rounded-full ${skill.dot}`} />
+                      <SkillClassicLogo name={skill.name} />
                       <span>{skill.name}</span>
                     </button>
                   );
@@ -1295,13 +1400,13 @@ export default function App() {
               </div>
 
               {currentSkillDetail && (
-                <div className="ios-glass-card mt-5 rounded-2xl border border-sky-400/35 p-6">
+                <div className="ios-glass-card mt-5 rounded-2xl border border-emerald-400/35 p-6">
                   <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-3">
                     <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-sky-300">
+                      <h3 className="text-lg sm:text-xl font-bold text-emerald-400">
                         {currentSkillDetail.title}
                       </h3>
-                      <p className="mt-0.5 text-xs text-neutral-400">
+                      <p className="mt-0.5 text-xs sm:text-sm text-neutral-400">
                         {currentSkillDetail.subtitle}
                       </p>
                     </div>
@@ -1320,10 +1425,10 @@ export default function App() {
                         key={block.heading}
                         className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
                       >
-                        <h4 className="text-sm font-bold text-white">
+                        <h4 className="text-sm sm:text-base font-bold text-white">
                           {block.heading}
                         </h4>
-                        <ul className="mt-2 list-disc space-y-1 pl-4 text-xs leading-relaxed text-neutral-300">
+                        <ul className="mt-2 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-neutral-300">
                           {block.points.map((pt) => (
                             <li key={pt}>{pt}</li>
                           ))}
