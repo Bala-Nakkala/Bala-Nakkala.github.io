@@ -146,7 +146,7 @@ function FarRightSideStreakFlow() {
   useEffect(() => {
     let animId;
     let startTime = null;
-    const cycleDuration = 7200;
+    const cycleDuration = 7600;
 
     const animate = (now) => {
       if (!startTime) startTime = now;
@@ -163,8 +163,8 @@ function FarRightSideStreakFlow() {
       const streak = streakRef.current;
 
       if (col && streak) {
-        const height = col.offsetHeight || 340;
-        const streakHeight = streak.offsetHeight || 64;
+        const height = col.offsetHeight || 420;
+        const streakHeight = streak.offsetHeight || 76;
         const y = -streakHeight + progress * (height + streakHeight * 1.15);
         streak.style.transform = `translate3d(0, ${y}px, 0)`;
       }
@@ -179,16 +179,16 @@ function FarRightSideStreakFlow() {
   return (
     <div
       ref={columnRef}
-      className="pointer-events-none hidden lg:flex lg:fixed lg:right-3 lg:top-24 lg:z-20 flex-col items-end gap-1.5 pr-0.5 select-none"
+      className="pointer-events-none hidden lg:flex lg:fixed lg:right-3 lg:top-24 lg:z-20 flex-col items-end gap-2 pr-0.5 select-none"
     >
       <div
         ref={streakRef}
         aria-hidden="true"
         className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
-        style={{ transform: "translate3d(0, -80px, 0)" }}
+        style={{ transform: "translate3d(0, -90px, 0)" }}
       >
-        <span className="w-[2px] h-11 rounded-full bg-gradient-to-b from-transparent via-sky-400/75 to-cyan-200" />
-        <span className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_#67e8f9,0_0_20px_#22d3ee]" />
+        <span className="w-[2.5px] h-14 rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200" />
+        <span className="h-3 w-3 rounded-full bg-white shadow-[0_0_12px_#67e8f9,0_0_22px_#22d3ee]" />
       </div>
 
       {FLOW_STAGES.map((stage, idx) => {
@@ -196,10 +196,10 @@ function FarRightSideStreakFlow() {
         return (
           <span
             key={stage}
-            className={`pr-3.5 text-[11px] font-semibold tracking-wide transition-all duration-200 ${
+            className={`pr-4 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-200 ${
               isHighlighted
-                ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.85)]"
-                : "text-sky-100/75"
+                ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]"
+                : "text-sky-100/80"
             }`}
           >
             {stage}
@@ -567,11 +567,11 @@ export default function App() {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-7xl px-6 py-8">
+      <main className="relative z-10 w-full px-3 sm:px-5 py-8 lg:pr-36">
         {activePage === "home" && (
           <>
             <section className="relative flex flex-col justify-between gap-8 lg:flex-row lg:items-start">
-              <div className="max-w-2xl">
+              <div className="max-w-3xl">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12]">
                   Hi, I&apos;m{" "}
                   <span style={blendedGradientStyle}>Bala Krishna</span>
@@ -586,7 +586,7 @@ export default function App() {
                   <span className="text-fuchsia-400">Scaling</span>
                 </div>
 
-                <p className="mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-neutral-300">
+                <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-neutral-300">
                   4 years of hands-on experience in AWS, Azure, Kubernetes, CI/CD,
                   and infrastructure automation to build reliable and scalable systems.
                 </p>
@@ -606,7 +606,7 @@ export default function App() {
             </section>
 
             {/* 3 Interactive iOS Glass Highlight Cards */}
-            <section className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <section className="mt-8 grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-3">
               <button
                 type="button"
                 onClick={() => toggleInfoCard("experience")}
@@ -703,7 +703,7 @@ export default function App() {
             </section>
 
             {activeInfoCard === "experience" && (
-              <section className="ios-glass-card mt-5 rounded-2xl border border-amber-400/35 p-6">
+              <section className="ios-glass-card mt-5 max-w-5xl rounded-2xl border border-amber-400/35 p-6">
                 <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
                   <div>
                     <h2 className="text-xl font-bold text-amber-200">
@@ -767,7 +767,7 @@ export default function App() {
             )}
 
             {activeInfoCard === "cloud" && (
-              <section className="ios-glass-card mt-5 rounded-2xl border border-purple-500/40 p-6">
+              <section className="ios-glass-card mt-5 max-w-5xl rounded-2xl border border-purple-500/40 p-6">
                 <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
                   <div>
                     <h2 className="text-xl font-bold text-purple-300">
@@ -839,7 +839,7 @@ export default function App() {
             )}
 
             {activeInfoCard === "kubernetes" && (
-              <section className="ios-glass-card mt-5 rounded-2xl border border-sky-400/40 p-6">
+              <section className="ios-glass-card mt-5 max-w-5xl rounded-2xl border border-sky-400/40 p-6">
                 <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
                   <div>
                     <h2 className="text-xl font-bold text-sky-300">
@@ -880,7 +880,7 @@ export default function App() {
               </section>
             )}
 
-            <section className="mt-8 border-t border-white/10 pt-5">
+            <section className="mt-8 max-w-5xl border-t border-white/10 pt-5">
               <div className="mb-3.5 flex items-center gap-2 text-sm font-bold text-white">
                 <span className="text-sky-400">❖</span>
                 <span>Key Skills</span>
