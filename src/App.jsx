@@ -559,17 +559,10 @@ export default function App() {
             href="https://github.com/Bala-Nakkala"
             target="_blank"
             rel="noopener noreferrer"
-            className="ios-glass-pill flex items-center gap-2.5 rounded-full border-purple-500/45 px-3.5 py-1.5 text-left hover:border-purple-400/80"
+            className="ios-glass-pill flex items-center gap-2 rounded-full border-purple-500/45 px-4 py-2 text-xs sm:text-sm font-bold text-white hover:border-purple-400/80"
           >
-            <GitHubLogo className="h-5 w-5 shrink-0 text-white" />
-            <div>
-              <div className="text-xs font-bold text-white leading-none">
-                GitHub
-              </div>
-              <div className="mt-0.5 text-[10px] text-purple-300 leading-none">
-                github.com/Bala-Nakkala
-              </div>
-            </div>
+            <GitHubLogo className="h-4 w-4 shrink-0 text-white" />
+            <span>GitHub</span>
           </a>
         </div>
       </header>
