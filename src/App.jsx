@@ -692,7 +692,7 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
   );
 }
 
-function FarRightSideStreakFlow() {
+function FixedRightSideStreakFlow() {
   const columnRef = useRef(null);
   const streakRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -733,7 +733,7 @@ function FarRightSideStreakFlow() {
   return (
     <div
       ref={columnRef}
-      className="pointer-events-none hidden lg:flex lg:fixed lg:right-3 lg:top-24 lg:z-20 flex-col items-end gap-2 pr-0.5 select-none"
+      className="pointer-events-none fixed right-3 top-24 z-20 flex flex-col items-end gap-2 pr-0.5 select-none"
     >
       <div
         ref={streakRef}
@@ -750,7 +750,7 @@ function FarRightSideStreakFlow() {
         return (
           <span
             key={stage}
-            className={`pr-4 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-200 ${
+            className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-200 ${
               isHighlighted
                 ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]"
                 : "text-sky-100/80"
@@ -1067,11 +1067,11 @@ export default function App() {
   const currentSkillDetail = activeSkill ? SKILL_DETAILS[activeSkill] : null;
 
   return (
-    <div className="relative min-h-screen w-full bg-black text-white">
+    <div className="relative min-h-screen w-[1280px] min-w-[1280px] overflow-x-auto bg-black text-white">
       <SpaceDotsBackground />
 
       <header className="relative z-20 border-b border-white/10 bg-black/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-full flex-wrap items-center justify-between gap-4 px-3 sm:px-5 py-4">
+        <div className="mx-auto flex w-full items-center justify-between gap-4 px-5 py-4">
           <button
             type="button"
             onClick={() => {
@@ -1084,7 +1084,7 @@ export default function App() {
               <DevOpsInfinityLogo className="h-6 w-6" />
             </div>
             <div>
-              <div className="text-base sm:text-lg font-bold tracking-tight leading-none">
+              <div className="text-lg font-bold tracking-tight leading-none">
                 <span style={blendedGradientStyle}>Bala Krishna</span>
               </div>
               <div className="mt-1 text-[11px] tracking-wider text-neutral-400">
@@ -1093,7 +1093,7 @@ export default function App() {
             </div>
           </button>
 
-          <nav className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+          <nav className="flex items-center gap-2.5">
             {NAV_ITEMS.map((item) => {
               const isActive = activePage === item.id;
               return (
@@ -1104,7 +1104,7 @@ export default function App() {
                     setActivePage(item.id);
                     if (item.id !== "projects") setSelectedProject(null);
                   }}
-                  className={`cursor-pointer rounded-full px-4 py-1.5 text-xs sm:text-sm font-medium ${
+                  className={`cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium ${
                     isActive
                       ? "ios-glass-pill-active text-white"
                       : "ios-glass-pill text-neutral-200 hover:text-white"
@@ -1120,7 +1120,7 @@ export default function App() {
             href="https://github.com/Bala-Nakkala"
             target="_blank"
             rel="noopener noreferrer"
-            className="ios-glass-pill flex items-center gap-2 rounded-full border-purple-500/45 px-4 py-2 text-xs sm:text-sm font-bold text-white hover:border-purple-400/80"
+            className="ios-glass-pill flex items-center gap-2 rounded-full border-purple-500/45 px-4 py-2 text-sm font-bold text-white hover:border-purple-400/80"
           >
             <GitHubLogo className="h-4 w-4 shrink-0 text-white" />
             <span>GitHub</span>
@@ -1128,18 +1128,18 @@ export default function App() {
         </div>
       </header>
 
-      <main className="relative z-10 w-full px-3 sm:px-5 py-8 lg:pr-36">
+      <main className="relative z-10 w-full px-5 py-8 pr-36">
         {activePage === "home" && (
           <>
-            <section className="relative flex flex-col justify-between gap-6 lg:grid lg:grid-cols-[1.15fr_1fr] lg:items-center">
+            <section className="relative grid grid-cols-[1.15fr_1fr] items-center justify-between gap-6">
               <div className="max-w-2xl">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12]">
+                <h1 className="text-6xl font-extrabold tracking-tight leading-[1.12]">
                   Hi, I&apos;m{" "}
                   <span style={blendedGradientStyle}>Bala Krishna</span>
                   <span className="mt-1 block text-white">DevOps Engineer</span>
                 </h1>
 
-                <div className="mt-4 flex flex-wrap items-center gap-2.5 text-sm sm:text-base font-medium">
+                <div className="mt-4 flex items-center gap-2.5 text-base font-medium">
                   <span className="text-red-500">Automating</span>
                   <span className="text-neutral-500">•</span>
                   <span className="text-green-600">Deploying</span>
@@ -1147,12 +1147,12 @@ export default function App() {
                   <span className="text-orange-400">Scaling</span>
                 </div>
 
-                <p className="mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-neutral-300">
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-neutral-300">
                   4 years of hands-on experience in AWS, Azure, Kubernetes, CI/CD,
                   and infrastructure automation to build reliable and scalable systems.
                 </p>
 
-                <div className="mt-6 flex flex-wrap items-center gap-4">
+                <div className="mt-6 flex items-center gap-4">
                   <button
                     type="button"
                     onClick={() => setActivePage("projects")}
@@ -1163,13 +1163,13 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="hidden lg:block" aria-hidden="true" />
+              <div aria-hidden="true" />
 
-              <FarRightSideStreakFlow />
+              <FixedRightSideStreakFlow />
             </section>
 
             {/* 3 Interactive Glass Highlight Buttons */}
-            <section className="mt-8 grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-3">
+            <section className="mt-8 grid max-w-5xl grid-cols-3 gap-4">
               <button
                 type="button"
                 onClick={() => toggleInfoCard("experience")}
@@ -1191,7 +1191,7 @@ export default function App() {
                     <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
                   </svg>
                 </div>
-                <span className="text-xs sm:text-sm font-medium">
+                <span className="text-sm font-medium">
                   4 Years DevOps Engineer
                 </span>
               </button>
@@ -1208,7 +1208,7 @@ export default function App() {
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white">
                   <SimpleCloudSymbol />
                 </div>
-                <span className="text-xs sm:text-sm font-medium">
+                <span className="text-sm font-medium">
                   AWS &amp; Azure Cloud
                 </span>
               </button>
@@ -1225,7 +1225,7 @@ export default function App() {
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white">
                   <SkillExactLogo name="Kubernetes" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium">
+                <span className="text-sm font-medium">
                   Kubernetes Orchestration
                 </span>
               </button>
@@ -1251,7 +1251,7 @@ export default function App() {
                   </button>
                 </div>
 
-                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="mt-4 grid grid-cols-2 gap-4">
                   <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
                     <div className="text-xs font-semibold text-sky-400">
                       TCS (2022–2026) • DevOps Engineering &amp; Production Deployment
@@ -1315,7 +1315,7 @@ export default function App() {
                   </button>
                 </div>
 
-                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="mt-4 grid grid-cols-2 gap-4">
                   <div className="rounded-xl border border-amber-400/25 bg-white/[0.03] p-4">
                     <h3 className="text-base font-bold text-amber-300">
                       AWS (Amazon Web Services) — What It Contains
@@ -1387,7 +1387,7 @@ export default function App() {
                   </button>
                 </div>
 
-                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="mt-4 grid grid-cols-2 gap-4">
                   <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
                     <h3 className="text-base font-bold text-white">
                       Project 1: High-Availability K8s &amp; GitOps Delivery
@@ -1440,10 +1440,10 @@ export default function App() {
                 <div className="ios-glass-card mt-5 rounded-2xl border border-emerald-400/35 p-6">
                   <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-3">
                     <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-emerald-400">
+                      <h3 className="text-xl font-bold text-emerald-400">
                         {currentSkillDetail.title}
                       </h3>
-                      <p className="mt-0.5 text-xs sm:text-sm text-neutral-400">
+                      <p className="mt-0.5 text-sm text-neutral-400">
                         {currentSkillDetail.subtitle}
                       </p>
                     </div>
@@ -1456,13 +1456,13 @@ export default function App() {
                     </button>
                   </div>
 
-                  <div className="mt-4 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+                  <div className="mt-4 grid grid-cols-2 gap-3.5">
                     {currentSkillDetail.items.map((block) => (
                       <div
                         key={block.heading}
                         className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
                       >
-                        <h4 className="text-sm sm:text-base font-bold text-white">
+                        <h4 className="text-base font-bold text-white">
                           {block.heading}
                         </h4>
                         <ul className="mt-2 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-neutral-300">
@@ -1482,13 +1482,13 @@ export default function App() {
         {activePage === "projects" && (
           <section>
             <div className="mb-6">
-              <h2 className="text-2xl sm:text-3xl font-bold text-white">Projects</h2>
+              <h2 className="text-3xl font-bold text-white">Projects</h2>
               <p className="mt-1 text-sm text-neutral-400">
                 Click a project to view its GitHub repository link.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-4 gap-4">
               {USER_PROJECTS.map((proj) => {
                 const isSelected = selectedProject === proj.name;
                 return (
@@ -1569,7 +1569,7 @@ export default function App() {
                 </svg>
               </div>
 
-              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+              <h2 className="text-5xl font-extrabold tracking-tight">
                 <span style={blendedGradientStyle}>Uploading Very Soon...</span>
               </h2>
 
@@ -1583,20 +1583,20 @@ export default function App() {
         )}
 
         {activePage === "resume" && (
-          <section className="ios-glass-card mx-auto max-w-4xl rounded-3xl border border-white/15 p-8 sm:p-10">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-6">
+          <section className="ios-glass-card mx-auto max-w-4xl rounded-3xl border border-white/15 p-10">
+            <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-6">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-sky-400">
                   Curriculum Vitae Vault
                 </p>
-                <h2 className="mt-1 text-2xl sm:text-3xl font-extrabold text-white">
+                <h2 className="mt-1 text-3xl font-extrabold text-white">
                   <span style={blendedGradientStyle}>Bala Krishna</span> — Resumes
                 </h2>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="flex items-center gap-2.5">
                 {isOwner && (
-                  <label className="ios-primary-btn inline-flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-purple-500 to-fuchsia-500 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white">
+                  <label className="ios-primary-btn inline-flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-purple-500 to-fuchsia-500 px-5 py-2.5 text-sm font-semibold text-white">
                     <span>+ Choose Resume File</span>
                     <input
                       type="file"
@@ -1626,7 +1626,7 @@ export default function App() {
             {showPinPrompt && !isOwner && (
               <form
                 onSubmit={handlePinSubmit}
-                className="mt-4 flex flex-wrap items-center justify-end gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-3"
+                className="mt-4 flex items-center justify-end gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-3"
               >
                 <input
                   type="password"
@@ -1651,10 +1651,10 @@ export default function App() {
               {hostedResumes.map((r) => (
                 <div
                   key={r.id}
-                  className={`rounded-2xl border p-4 sm:flex sm:items-center sm:justify-between sm:gap-4 ${r.borderClass}`}
+                  className={`flex items-center justify-between gap-4 rounded-2xl border p-4 ${r.borderClass}`}
                 >
                   <div className="text-sm font-bold text-white">{r.name}</div>
-                  <div className="mt-3 flex items-center gap-2 sm:mt-0">
+                  <div className="flex items-center gap-2">
                     <a
                       href={r.url}
                       target="_blank"
@@ -1686,10 +1686,10 @@ export default function App() {
               {resumes.map((r) => (
                 <div
                   key={r.id}
-                  className={`rounded-2xl border p-4 sm:flex sm:items-center sm:justify-between sm:gap-4 ${r.borderClass}`}
+                  className={`flex items-center justify-between gap-4 rounded-2xl border p-4 ${r.borderClass}`}
                 >
                   <div className="text-sm font-bold text-white">{r.name}</div>
-                  <div className="mt-3 flex items-center gap-2 sm:mt-0">
+                  <div className="flex items-center gap-2">
                     <a
                       href={r.url}
                       target="_blank"
@@ -1753,12 +1753,12 @@ export default function App() {
         )}
 
         {activePage === "contact" && (
-          <section className="ios-glass-card mx-auto max-w-2xl rounded-3xl border border-white/15 p-8 sm:p-10">
+          <section className="ios-glass-card mx-auto max-w-2xl rounded-3xl border border-white/15 p-10">
             <div className="text-center">
               <p className="text-xs font-semibold uppercase tracking-widest text-sky-400">
                 Let&apos;s Connect
               </p>
-              <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight">
+              <h2 className="mt-2 text-4xl font-extrabold tracking-tight">
                 <span style={blendedGradientStyle}>Bala Krishna</span>
               </h2>
               <p className="mt-1.5 text-sm text-neutral-400">
@@ -1779,7 +1779,7 @@ export default function App() {
                     <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
                       Email
                     </div>
-                    <div className="mt-0.5 text-sm sm:text-base font-bold text-white group-hover:text-rose-300 transition">
+                    <div className="mt-0.5 text-base font-bold text-white group-hover:text-rose-300 transition">
                       bala.nakkalan@gmail.com
                     </div>
                   </div>
@@ -1803,7 +1803,7 @@ export default function App() {
                     <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
                       GitHub
                     </div>
-                    <div className="mt-0.5 text-sm sm:text-base font-bold text-white group-hover:text-purple-300 transition">
+                    <div className="mt-0.5 text-base font-bold text-white group-hover:text-purple-300 transition">
                       github.com/Bala-Nakkala
                     </div>
                   </div>
@@ -1827,7 +1827,7 @@ export default function App() {
                     <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
                       LinkedIn
                     </div>
-                    <div className="mt-0.5 text-sm sm:text-base font-bold text-white group-hover:text-sky-300 transition">
+                    <div className="mt-0.5 text-base font-bold text-white group-hover:text-sky-300 transition">
                       www.linkedin.com/in/bala-nakkala
                     </div>
                   </div>
