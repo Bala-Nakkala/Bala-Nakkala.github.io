@@ -731,35 +731,47 @@ function FixedRightSideStreakFlow() {
   }, []);
 
   return (
-    <div
-      ref={columnRef}
-      className="pointer-events-none fixed right-3 top-24 z-20 flex flex-col items-end gap-2 pr-0.5 select-none"
-    >
-      <div
-        ref={streakRef}
-        aria-hidden="true"
-        className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
-        style={{ transform: "translate3d(0, -90px, 0)" }}
+    <div className="fixed right-3 top-20 z-20 flex flex-col items-end gap-2 pr-0.5 select-none">
+      <a
+        href="https://github.com/Bala-Nakkala"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="ios-glass-pill mb-1 flex items-center gap-2 rounded-full border-white/25 px-3.5 py-1.5 text-xs font-semibold text-white hover:border-white/50"
       >
-        <span className="w-[2.5px] h-14 rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200" />
-        <span className="h-3 w-3 rounded-full bg-white shadow-[0_0_12px_#67e8f9,0_0_22px_#22d3ee]" />
-      </div>
+        <GitHubLogo className="h-3.5 w-3.5 shrink-0 text-white" />
+        <span>GitHub</span>
+      </a>
 
-      {FLOW_STAGES.map((stage, idx) => {
-        const isHighlighted = idx === activeIndex;
-        return (
-          <span
-            key={stage}
-            className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-200 ${
-              isHighlighted
-                ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]"
-                : "text-sky-100/80"
-            }`}
-          >
-            {stage}
-          </span>
-        );
-      })}
+      <div
+        ref={columnRef}
+        className="pointer-events-none relative flex flex-col items-end gap-2 pr-0.5"
+      >
+        <div
+          ref={streakRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
+          style={{ transform: "translate3d(0, -90px, 0)" }}
+        >
+          <span className="w-[2.5px] h-14 rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200" />
+          <span className="h-3 w-3 rounded-full bg-white shadow-[0_0_12px_#67e8f9,0_0_22px_#22d3ee]" />
+        </div>
+
+        {FLOW_STAGES.map((stage, idx) => {
+          const isHighlighted = idx === activeIndex;
+          return (
+            <span
+              key={stage}
+              className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-200 ${
+                isHighlighted
+                  ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]"
+                  : "text-sky-100/80"
+              }`}
+            >
+              {stage}
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -1140,11 +1152,11 @@ export default function App() {
                 </h1>
 
                 <div className="mt-4 flex items-center gap-2.5 text-base font-medium">
-                  <span className="text-red-500">Automating</span>
+                  <span className="text-white">Automating</span>
                   <span className="text-neutral-500">•</span>
-                  <span className="text-green-600">Deploying</span>
+                  <span className="text-white">Deploying</span>
                   <span className="text-neutral-500">•</span>
-                  <span className="text-orange-400">Scaling</span>
+                  <span className="text-white">Scaling</span>
                 </div>
 
                 <p className="mt-4 max-w-xl text-base leading-relaxed text-neutral-300">
@@ -1232,10 +1244,10 @@ export default function App() {
             </section>
 
             {activeInfoCard === "experience" && (
-              <section className="ios-glass-card mt-5 max-w-5xl rounded-2xl border border-amber-400/35 p-6">
+              <section className="ios-glass-card mt-5 max-w-5xl rounded-2xl border border-emerald-400/35 p-6">
                 <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
                   <div>
-                    <h2 className="text-xl font-bold text-amber-200">
+                    <h2 className="text-xl font-bold text-emerald-400">
                       4 Years Experience — Projects &amp; Key Achievements
                     </h2>
                     <p className="text-xs text-neutral-400">
@@ -1253,10 +1265,10 @@ export default function App() {
 
                 <div className="mt-4 grid grid-cols-2 gap-4">
                   <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <div className="text-xs font-semibold text-sky-400">
+                    <div className="text-xs font-semibold text-emerald-400">
                       TCS (2022–2026) • DevOps Engineering &amp; Production Deployment
                     </div>
-                    <h3 className="mt-1 text-base font-bold text-white">
+                    <h3 className="mt-1 text-base font-bold text-emerald-400">
                       Government Mobile Application (200M+ Registered Users)
                     </h3>
                     <ul className="mt-2.5 list-disc space-y-1.5 pl-4 text-xs leading-relaxed text-neutral-300">
@@ -1273,10 +1285,10 @@ export default function App() {
                   </div>
 
                   <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <div className="text-xs font-semibold text-purple-300">
+                    <div className="text-xs font-semibold text-emerald-400">
                       TCS (Aug &apos;22 – Jan &apos;25) • Biometric Data Processing &amp; Integration
                     </div>
-                    <h3 className="mt-1 text-base font-bold text-white">
+                    <h3 className="mt-1 text-base font-bold text-emerald-400">
                       Biometric Data Processing Platform (200,000+ Daily Packets)
                     </h3>
                     <ul className="mt-2.5 list-disc space-y-1.5 pl-4 text-xs leading-relaxed text-neutral-300">
