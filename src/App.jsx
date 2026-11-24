@@ -761,35 +761,47 @@ function FixedRightSideStreakFlow() {
   }, []);
 
   return (
-    <div
-      ref={columnRef}
-      className="pointer-events-none fixed right-3 top-24 z-20 flex flex-col items-end gap-2 pr-0.5 select-none"
-    >
-      <div
-        ref={streakRef}
-        aria-hidden="true"
-        className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
-        style={{ transform: "translate3d(0, -90px, 0)" }}
+    <div className="fixed right-3 top-16 z-20 flex flex-col items-end gap-2 pr-0.5 select-none">
+      <a
+        href="https://github.com/Bala-Nakkala"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="ios-glass-pill mb-2 mr-3 flex items-center gap-2 rounded-full border-purple-500/45 px-4 py-2 text-sm font-bold text-white hover:border-purple-400/80"
       >
-        <span className="w-[2.5px] h-14 rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200" />
-        <span className="h-3 w-3 rounded-full bg-white shadow-[0_0_12px_#67e8f9,0_0_22px_#22d3ee]" />
-      </div>
+        <GitHubLogo className="h-4 w-4 shrink-0 text-white" />
+        <span>GitHub</span>
+      </a>
 
-      {FLOW_STAGES.map((stage, idx) => {
-        const isHighlighted = idx === activeIndex;
-        return (
-          <span
-            key={stage}
-            className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-200 ${
-              isHighlighted
-                ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]"
-                : "text-sky-100/80"
-            }`}
-          >
-            {stage}
-          </span>
-        );
-      })}
+      <div
+        ref={columnRef}
+        className="pointer-events-none relative flex flex-col items-end gap-2 pr-0.5"
+      >
+        <div
+          ref={streakRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
+          style={{ transform: "translate3d(0, -90px, 0)" }}
+        >
+          <span className="w-[2.5px] h-14 rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200" />
+          <span className="h-3 w-3 rounded-full bg-white shadow-[0_0_12px_#67e8f9,0_0_22px_#22d3ee]" />
+        </div>
+
+        {FLOW_STAGES.map((stage, idx) => {
+          const isHighlighted = idx === activeIndex;
+          return (
+            <span
+              key={stage}
+              className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-200 ${
+                isHighlighted
+                  ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]"
+                  : "text-sky-100/80"
+              }`}
+            >
+              {stage}
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -1107,7 +1119,7 @@ export default function App() {
       <SpaceDotsBackground />
 
       <header className="relative z-20 border-b border-white/10 bg-black/70 backdrop-blur-xl">
-        <div className="flex w-full items-center justify-between gap-6 pl-5 pr-4 py-4">
+        <div className="flex w-full items-center justify-between px-5 py-4">
           <button
             type="button"
             onClick={() => {
