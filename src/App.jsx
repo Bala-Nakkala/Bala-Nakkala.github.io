@@ -1107,7 +1107,7 @@ export default function App() {
       <SpaceDotsBackground />
 
       <header className="relative z-20 border-b border-white/10 bg-black/70 backdrop-blur-xl">
-        <div className="flex w-full items-center justify-between px-5 py-4">
+        <div className="flex w-full items-center justify-between gap-6 pl-5 pr-4 py-4">
           <button
             type="button"
             onClick={() => {
