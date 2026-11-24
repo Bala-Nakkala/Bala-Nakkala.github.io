@@ -40,6 +40,36 @@ const FLOW_STAGES = [
   "User",
 ];
 
+const TAGLINE_DETAILS = {
+  Automating: {
+    title: "Automating — Eliminating Manual Effort & Human Errors",
+    subtitle: "End-to-end infrastructure, configuration, and pipeline automation",
+    points: [
+      "Automates repetitive server provisioning, OS configuration, and rolling updates using Terraform and Ansible.",
+      "Replaces manual build and testing steps with automated CI pipelines in Jenkins and GitHub Actions.",
+      "Reduces deployment effort, enforces consistent configurations across environments, and prevents configuration drift.",
+    ],
+  },
+  Deploying: {
+    title: "Deploying — Fast, Safe & Repeatable Releases",
+    subtitle: "Containerized and GitOps-driven production delivery workflows",
+    points: [
+      "Packages applications into portable Docker/Kaniko container images stored securely in private registries (ECR).",
+      "Uses declarative GitOps workflows with Argo CD and Argo Rollouts so every cluster change is tracked in Git.",
+      "Enables zero/low-downtime rolling updates, canary rollouts, and instant rollbacks when needed.",
+    ],
+  },
+  Scaling: {
+    title: "Scaling — High Availability & Dynamic Traffic Handling",
+    subtitle: "Elastic compute, Kubernetes orchestration, and proactive observability",
+    points: [
+      "Scales containerized microservices dynamically on Kubernetes (EKS / AKS) based on real-time CPU, memory, and traffic demand.",
+      "Distributes incoming user traffic reliably across healthy nodes using AWS NLB, NGINX Ingress, and HAProxy.",
+      "Monitors cluster and application health continuously with Prometheus, Grafana, and Alertmanager to maintain 99.9%+ availability.",
+    ],
+  },
+};
+
 const USER_PROJECTS = [
   {
     name: "Bala-Nakkala.github.io",
@@ -731,47 +761,35 @@ function FixedRightSideStreakFlow() {
   }, []);
 
   return (
-    <div className="fixed right-3 top-20 z-20 flex flex-col items-end gap-2 pr-0.5 select-none">
-      <a
-        href="https://github.com/Bala-Nakkala"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="ios-glass-pill mb-1 flex items-center gap-2 rounded-full border-white/25 px-3.5 py-1.5 text-xs font-semibold text-white hover:border-white/50"
-      >
-        <GitHubLogo className="h-3.5 w-3.5 shrink-0 text-white" />
-        <span>GitHub</span>
-      </a>
-
+    <div
+      ref={columnRef}
+      className="pointer-events-none fixed right-3 top-24 z-20 flex flex-col items-end gap-2 pr-0.5 select-none"
+    >
       <div
-        ref={columnRef}
-        className="pointer-events-none relative flex flex-col items-end gap-2 pr-0.5"
+        ref={streakRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
+        style={{ transform: "translate3d(0, -90px, 0)" }}
       >
-        <div
-          ref={streakRef}
-          aria-hidden="true"
-          className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
-          style={{ transform: "translate3d(0, -90px, 0)" }}
-        >
-          <span className="w-[2.5px] h-14 rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200" />
-          <span className="h-3 w-3 rounded-full bg-white shadow-[0_0_12px_#67e8f9,0_0_22px_#22d3ee]" />
-        </div>
-
-        {FLOW_STAGES.map((stage, idx) => {
-          const isHighlighted = idx === activeIndex;
-          return (
-            <span
-              key={stage}
-              className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-200 ${
-                isHighlighted
-                  ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]"
-                  : "text-sky-100/80"
-              }`}
-            >
-              {stage}
-            </span>
-          );
-        })}
+        <span className="w-[2.5px] h-14 rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200" />
+        <span className="h-3 w-3 rounded-full bg-white shadow-[0_0_12px_#67e8f9,0_0_22px_#22d3ee]" />
       </div>
+
+      {FLOW_STAGES.map((stage, idx) => {
+        const isHighlighted = idx === activeIndex;
+        return (
+          <span
+            key={stage}
+            className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-200 ${
+              isHighlighted
+                ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]"
+                : "text-sky-100/80"
+            }`}
+          >
+            {stage}
+          </span>
+        );
+      })}
     </div>
   );
 }
@@ -978,6 +996,7 @@ function LinkedInLogo() {
 
 export default function App() {
   const [activePage, setActivePage] = useState("home");
+  const [activeTagline, setActiveTagline] = useState(null);
   const [activeInfoCard, setActiveInfoCard] = useState(null);
   const [activeSkill, setActiveSkill] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -1008,6 +1027,10 @@ export default function App() {
     backgroundClip: "text",
     color: "transparent",
     transition: "background-image 0.6s ease",
+  };
+
+  const toggleTagline = (key) => {
+    setActiveTagline((prev) => (prev === key ? null : key));
   };
 
   const toggleInfoCard = (key) => {
@@ -1076,6 +1099,7 @@ export default function App() {
     });
   };
 
+  const currentTaglineDetail = activeTagline ? TAGLINE_DETAILS[activeTagline] : null;
   const currentSkillDetail = activeSkill ? SKILL_DETAILS[activeSkill] : null;
 
   return (
@@ -1083,7 +1107,7 @@ export default function App() {
       <SpaceDotsBackground />
 
       <header className="relative z-20 border-b border-white/10 bg-black/70 backdrop-blur-xl">
-        <div className="mx-auto flex w-full items-center justify-between gap-4 px-5 py-4">
+        <div className="flex w-full items-center justify-between gap-4 pl-5 pr-2 py-4">
           <button
             type="button"
             onClick={() => {
@@ -1132,7 +1156,7 @@ export default function App() {
             href="https://github.com/Bala-Nakkala"
             target="_blank"
             rel="noopener noreferrer"
-            className="ios-glass-pill flex items-center gap-2 rounded-full border-purple-500/45 px-4 py-2 text-sm font-bold text-white hover:border-purple-400/80"
+            className="ios-glass-pill ml-auto flex items-center gap-2 rounded-full border-purple-500/45 px-4 py-2 text-sm font-bold text-white hover:border-purple-400/80"
           >
             <GitHubLogo className="h-4 w-4 shrink-0 text-white" />
             <span>GitHub</span>
@@ -1151,13 +1175,52 @@ export default function App() {
                   <span className="mt-1 block text-white">DevOps Engineer</span>
                 </h1>
 
-                <div className="mt-4 flex items-center gap-2.5 text-base font-medium">
-                  <span className="text-white">Automating</span>
-                  <span className="text-neutral-500">•</span>
-                  <span className="text-white">Deploying</span>
-                  <span className="text-neutral-500">•</span>
-                  <span className="text-white">Scaling</span>
+                <div className="mt-4 flex items-center gap-2.5">
+                  {["Automating", "Deploying", "Scaling"].map((item) => {
+                    const isTagActive = activeTagline === item;
+                    return (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => toggleTagline(item)}
+                        className={`cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium transition ${
+                          isTagActive
+                            ? "ios-glass-pill-active text-white"
+                            : "ios-glass-pill text-white hover:text-white"
+                        }`}
+                      >
+                        {item}
+                      </button>
+                    );
+                  })}
                 </div>
+
+                {currentTaglineDetail && (
+                  <div className="ios-glass-card mt-4 max-w-xl rounded-2xl border border-emerald-400/35 p-5">
+                    <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-2.5">
+                      <div>
+                        <h3 className="text-base font-bold text-emerald-400">
+                          {currentTaglineDetail.title}
+                        </h3>
+                        <p className="mt-0.5 text-xs text-neutral-400">
+                          {currentTaglineDetail.subtitle}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setActiveTagline(null)}
+                        className="ios-glass-pill shrink-0 cursor-pointer rounded-full px-3 py-1 text-xs text-neutral-200"
+                      >
+                        Close ✕
+                      </button>
+                    </div>
+                    <ul className="mt-3 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-neutral-200">
+                      {currentTaglineDetail.points.map((pt) => (
+                        <li key={pt}>{pt}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 <p className="mt-4 max-w-xl text-base leading-relaxed text-neutral-300">
                   4 years of hands-on experience in AWS, Azure, Kubernetes, CI/CD,
