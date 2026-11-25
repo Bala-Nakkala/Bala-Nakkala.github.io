@@ -1498,10 +1498,10 @@ export default function App() {
                       key={skill.name}
                       type="button"
                       onClick={() => toggleSkill(skill.name)}
-                      className={`flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-medium backdrop-blur-md transition ${
+                      className={`flex cursor-pointer items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium transition ${
                         isSkillOpen
-                          ? "border-sky-400 bg-sky-500/20 text-white shadow-[0_0_16px_rgba(56,189,248,0.3)]"
-                          : "border-white/15 bg-white/[0.04] text-neutral-200 hover:border-sky-400/50 hover:text-white"
+                          ? "ios-glass-pill-active text-white"
+                          : "ios-glass-pill text-white hover:text-white"
                       }`}
                     >
                       <SkillExactLogo name={skill.name} />
