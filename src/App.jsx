@@ -725,6 +725,7 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
 function FixedRightSideStreakFlow() {
   const columnRef = useRef(null);
   const streakRef = useRef(null);
+  const stageRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -737,20 +738,33 @@ function FixedRightSideStreakFlow() {
       const elapsed = (now - startTime) % cycleDuration;
       const progress = elapsed / cycleDuration;
 
-      const idx = Math.min(
-        FLOW_STAGES.length - 1,
-        Math.floor(progress * FLOW_STAGES.length)
-      );
-      setActiveIndex(idx);
-
       const col = columnRef.current;
       const streak = streakRef.current;
 
       if (col && streak) {
+        const colRect = col.getBoundingClientRect();
         const height = col.offsetHeight || 420;
-        const streakHeight = streak.offsetHeight || 76;
+        const streakHeight = streak.offsetHeight || 64;
         const y = -streakHeight + progress * (height + streakHeight * 1.15);
         streak.style.transform = `translate3d(0, ${y}px, 0)`;
+
+        const lineTipScreenY = colRect.top + y + streakHeight;
+
+        let closestIdx = 0;
+        let minDistance = Infinity;
+
+        stageRefs.current.forEach((el, idx) => {
+          if (!el) return;
+          const r = el.getBoundingClientRect();
+          const stageCenterY = r.top + r.height / 2;
+          const dist = Math.abs(lineTipScreenY - stageCenterY);
+          if (dist < minDistance) {
+            minDistance = dist;
+            closestIdx = idx;
+          }
+        });
+
+        setActiveIndex((prev) => (prev === closestIdx ? prev : closestIdx));
       }
 
       animId = requestAnimationFrame(animate);
@@ -769,10 +783,9 @@ function FixedRightSideStreakFlow() {
         ref={streakRef}
         aria-hidden="true"
         className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
-        style={{ transform: "translate3d(0, -90px, 0)" }}
+        style={{ transform: "translate3d(0, -80px, 0)" }}
       >
-        <span className="w-[2.5px] h-14 rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200" />
-        <span className="h-3 w-3 rounded-full bg-white shadow-[0_0_12px_#67e8f9,0_0_22px_#22d3ee]" />
+        <span className="h-16 w-[2.5px] rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200 shadow-[0_0_10px_rgba(34,211,238,0.85)]" />
       </div>
 
       {FLOW_STAGES.map((stage, idx) => {
@@ -780,9 +793,12 @@ function FixedRightSideStreakFlow() {
         return (
           <span
             key={stage}
-            className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-200 ${
+            ref={(el) => {
+              stageRefs.current[idx] = el;
+            }}
+            className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-150 ${
               isHighlighted
-                ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]"
+                ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.95)]"
                 : "text-sky-100/80"
             }`}
           >
