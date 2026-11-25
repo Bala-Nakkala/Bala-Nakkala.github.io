@@ -725,6 +725,7 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
 function FixedRightSideStreakFlow() {
   const columnRef = useRef(null);
   const streakRef = useRef(null);
+  const sparkRef = useRef(null);
   const stageRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -740,6 +741,7 @@ function FixedRightSideStreakFlow() {
 
       const col = columnRef.current;
       const streak = streakRef.current;
+      const spark = sparkRef.current;
 
       if (col && streak) {
         const colRect = col.getBoundingClientRect();
@@ -747,6 +749,15 @@ function FixedRightSideStreakFlow() {
         const streakHeight = streak.offsetHeight || 64;
         const y = -streakHeight + progress * (height + streakHeight * 1.15);
         streak.style.transform = `translate3d(0, ${y}px, 0)`;
+
+        if (spark) {
+          const twinklePhase = (now * 0.022) % (Math.PI * 2);
+          const scale = 0.72 + ((Math.sin(twinklePhase) + 1) / 2) * 0.52;
+          const opacity = 0.65 + ((Math.cos(twinklePhase * 1.3) + 1) / 2) * 0.35;
+          const rot = ((now * 0.08) % 360).toFixed(1);
+          spark.style.transform = `translate3d(0, 2px, 0) scale(${scale.toFixed(2)}) rotate(${rot}deg)`;
+          spark.style.opacity = opacity.toFixed(2);
+        }
 
         const lineTipScreenY = colRect.top + y + streakHeight;
 
@@ -785,7 +796,15 @@ function FixedRightSideStreakFlow() {
         className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
         style={{ transform: "translate3d(0, -80px, 0)" }}
       >
-        <span className="h-16 w-[2.5px] rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200 shadow-[0_0_10px_rgba(34,211,238,0.85)]" />
+        <span className="h-14 w-[2.5px] rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200 shadow-[0_0_8px_rgba(34,211,238,0.75)]" />
+        <svg
+          ref={sparkRef}
+          className="h-3.5 w-3.5 text-amber-200 drop-shadow-[0_0_6px_rgba(253,224,71,0.95)] will-change-transform"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z" />
+        </svg>
       </div>
 
       {FLOW_STAGES.map((stage, idx) => {
