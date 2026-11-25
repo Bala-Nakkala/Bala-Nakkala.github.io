@@ -1103,10 +1103,10 @@ export default function App() {
   const currentSkillDetail = activeSkill ? SKILL_DETAILS[activeSkill] : null;
 
   return (
-    <div className="relative min-h-screen w-[1280px] min-w-[1280px] overflow-x-auto bg-black text-white">
+    <div className="relative min-h-screen w-full min-w-[1280px] overflow-x-auto bg-black text-white">
       <SpaceDotsBackground />
 
-      <header className="relative z-20 border-b border-white/10 bg-black/70 backdrop-blur-xl">
+      <header className="relative z-20 w-full border-b border-white/10 bg-black/70 backdrop-blur-xl">
         <div className="flex w-full items-center justify-between py-4 pl-5 pr-1">
           <button
             type="button"
