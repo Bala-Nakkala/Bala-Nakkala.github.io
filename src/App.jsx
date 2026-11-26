@@ -725,7 +725,6 @@ function DevOpsInfinityLogo({ className = "h-6 w-6" }) {
 function FixedRightSideStreakFlow() {
   const columnRef = useRef(null);
   const streakRef = useRef(null);
-  const sparkRef = useRef(null);
   const stageRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -741,23 +740,13 @@ function FixedRightSideStreakFlow() {
 
       const col = columnRef.current;
       const streak = streakRef.current;
-      const spark = sparkRef.current;
 
       if (col && streak) {
         const colRect = col.getBoundingClientRect();
         const height = col.offsetHeight || 420;
-        const streakHeight = streak.offsetHeight || 72;
+        const streakHeight = streak.offsetHeight || 88;
         const y = -streakHeight + progress * (height + streakHeight * 1.15);
         streak.style.transform = `translate3d(0, ${y}px, 0)`;
-
-        if (spark) {
-          const twinklePhase = (now * 0.024) % (Math.PI * 2);
-          const scale = 0.78 + ((Math.sin(twinklePhase) + 1) / 2) * 0.45;
-          const opacity = 0.72 + ((Math.cos(twinklePhase * 1.3) + 1) / 2) * 0.28;
-          const rot = ((now * 0.09) % 360).toFixed(1);
-          spark.style.transform = `translate3d(0, -1px, 0) scale(${scale.toFixed(2)}) rotate(${rot}deg)`;
-          spark.style.opacity = opacity.toFixed(2);
-        }
 
         const lineTipScreenY = colRect.top + y + streakHeight;
 
@@ -790,25 +779,65 @@ function FixedRightSideStreakFlow() {
       ref={columnRef}
       className="pointer-events-none fixed right-3 top-24 z-20 flex flex-col items-end gap-2 pr-0.5 select-none"
     >
-      {/* Calcium violet/lavender meteor streak moving from Code to User */}
+      {/* Calcium glowing trail with violet-to-lavender graduation and twinkling sparks */}
       <div
         ref={streakRef}
         aria-hidden="true"
         className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
-        style={{ transform: "translate3d(0, -80px, 0)" }}
+        style={{ transform: "translate3d(0, -90px, 0)" }}
       >
-        <span className="h-16 w-[2.5px] rounded-full bg-gradient-to-b from-transparent via-purple-500/75 to-violet-300 shadow-[0_0_10px_rgba(168,85,247,0.85)]" />
-        <span className="relative -mt-1 flex items-center justify-center">
-          <span className="h-3.5 w-3.5 rounded-full bg-violet-200 blur-[2px]" />
-          <svg
-            ref={sparkRef}
-            className="absolute h-4 w-4 text-violet-200 drop-shadow-[0_0_8px_rgba(192,132,252,0.98)] will-change-transform"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M12 1.5l1.8 6.7L20.5 10l-6.7 1.8L12 18.5l-1.8-6.7L3.5 10l6.7-1.8L12 1.5z" />
-          </svg>
-        </span>
+        <svg
+          className="h-24 w-8 overflow-visible"
+          viewBox="0 0 32 96"
+          fill="none"
+        >
+          <defs>
+            <linearGradient id="calciumTrailGrad" x1="16" y1="0" x2="16" y2="92" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#4C1D95" stopOpacity="0" />
+              <stop offset="35%" stopColor="#7E22CE" stopOpacity="0.65" />
+              <stop offset="75%" stopColor="#C084FC" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#F5D0FE" stopOpacity="1" />
+            </linearGradient>
+            <radialGradient id="calciumTipGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
+              <stop offset="45%" stopColor="#E9D5FF" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#A855F7" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          <line
+            x1="16"
+            y1="2"
+            x2="16"
+            y2="86"
+            stroke="#A855F7"
+            strokeWidth="6"
+            strokeLinecap="round"
+            opacity="0.22"
+          />
+          <line
+            x1="16"
+            y1="2"
+            x2="16"
+            y2="86"
+            stroke="url(#calciumTrailGrad)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+
+          <circle cx="11" cy="36" r="1.1" fill="#C084FC" opacity="0.65" />
+          <circle cx="21" cy="48" r="1.2" fill="#D8B4FE" opacity="0.75" />
+          <circle cx="10" cy="62" r="1.3" fill="#E9D5FF" opacity="0.85" />
+          <circle cx="21.5" cy="70" r="1.2" fill="#F3E8FF" opacity="0.9" />
+          <circle cx="12" cy="79" r="1.4" fill="#F5D0FE" opacity="0.95" />
+
+          <circle cx="16" cy="87" r="9" fill="url(#calciumTipGlow)" />
+          <path
+            d="M16 80.5l1.4 4.8 4.8 1.4-4.8 1.4-1.4 4.8-1.4-4.8-4.8-1.4 4.8-1.4 1.4-4.8z"
+            fill="#F5D0FE"
+          />
+          <circle cx="16" cy="87" r="2.2" fill="#FFFFFF" />
+        </svg>
       </div>
 
       {FLOW_STAGES.map((stage, idx) => {
