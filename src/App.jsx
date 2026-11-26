@@ -731,7 +731,7 @@ function FixedRightSideStreakFlow() {
   useEffect(() => {
     let animId;
     let startTime = null;
-    const cycleDuration = 7600;
+    const cycleDuration = 6800;
 
     const animate = (now) => {
       if (!startTime) startTime = now;
@@ -745,10 +745,39 @@ function FixedRightSideStreakFlow() {
         const colRect = col.getBoundingClientRect();
         const height = col.offsetHeight || 420;
         const streakHeight = streak.offsetHeight || 88;
-        const y = -streakHeight + progress * (height + streakHeight * 1.15);
-        streak.style.transform = `translate3d(0, ${y}px, 0)`;
 
-        const lineTipScreenY = colRect.top + y + streakHeight;
+        const firstStageEl = stageRefs.current[0];
+        const lastStageEl = stageRefs.current[FLOW_STAGES.length - 1];
+
+        const startOffsetY = firstStageEl
+          ? firstStageEl.getBoundingClientRect().top - colRect.top - streakHeight * 0.7
+          : -streakHeight * 0.5;
+        const endTipOffsetY = lastStageEl
+          ? lastStageEl.getBoundingClientRect().top +
+            lastStageEl.getBoundingClientRect().height * 0.55 -
+            colRect.top
+          : height;
+
+        const currentTipOffsetY =
+          startOffsetY + streakHeight + progress * (endTipOffsetY - (startOffsetY + streakHeight));
+        const y = currentTipOffsetY - streakHeight;
+        const lineTipScreenY = colRect.top + currentTipOffsetY;
+
+        const userCenterY = lastStageEl
+          ? lastStageEl.getBoundingClientRect().top +
+            lastStageEl.getBoundingClientRect().height * 0.55
+          : colRect.bottom;
+
+        const hasCrossedUser = lineTipScreenY >= userCenterY;
+
+        if (hasCrossedUser) {
+          streak.style.opacity = "0";
+          streak.style.transform = `translate3d(0, ${y}px, 0)`;
+        } else {
+          const shimmer = 0.88 + Math.sin(now * 0.018) * 0.12;
+          streak.style.opacity = shimmer.toFixed(2);
+          streak.style.transform = `translate3d(0, ${y}px, 0)`;
+        }
 
         let closestIdx = 0;
         let minDistance = Infinity;
@@ -777,66 +806,66 @@ function FixedRightSideStreakFlow() {
   return (
     <div
       ref={columnRef}
-      className="pointer-events-none fixed right-3 top-24 z-20 flex flex-col items-end gap-2 pr-0.5 select-none"
+      className="pointer-events-none fixed right-2 top-24 z-20 flex flex-col items-end gap-2 select-none"
     >
-      {/* Calcium glowing trail with violet-to-lavender graduation and twinkling sparks */}
+      {/* Calcium shimmering violet-to-lavender trail positioned slightly right of stage labels */}
       <div
         ref={streakRef}
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
-        style={{ transform: "translate3d(0, -90px, 0)" }}
+        className="pointer-events-none absolute top-0 right-1 flex flex-col items-center will-change-transform"
+        style={{ transform: "translate3d(0, -90px, 0)", opacity: 0 }}
       >
         <svg
-          className="h-24 w-8 overflow-visible"
-          viewBox="0 0 32 96"
+          className="h-24 w-9 overflow-visible"
+          viewBox="0 0 36 96"
           fill="none"
         >
           <defs>
-            <linearGradient id="calciumTrailGrad" x1="16" y1="0" x2="16" y2="92" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#4C1D95" stopOpacity="0" />
-              <stop offset="35%" stopColor="#7E22CE" stopOpacity="0.65" />
-              <stop offset="75%" stopColor="#C084FC" stopOpacity="0.95" />
-              <stop offset="100%" stopColor="#F5D0FE" stopOpacity="1" />
+            <linearGradient id="calciumShimmerGrad" x1="18" y1="0" x2="18" y2="90" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#6B21A8" stopOpacity="0" />
+              <stop offset="35%" stopColor="#9333EA" stopOpacity="0.65" />
+              <stop offset="72%" stopColor="#C084FC" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#E9D5FF" stopOpacity="1" />
             </linearGradient>
-            <radialGradient id="calciumTipGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
-              <stop offset="45%" stopColor="#E9D5FF" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#A855F7" stopOpacity="0" />
+            <radialGradient id="calciumSparkGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#F3E8FF" stopOpacity="1" />
+              <stop offset="45%" stopColor="#C084FC" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#7E22CE" stopOpacity="0" />
             </radialGradient>
           </defs>
 
           <line
-            x1="16"
+            x1="18"
             y1="2"
-            x2="16"
+            x2="18"
             y2="86"
             stroke="#A855F7"
-            strokeWidth="6"
+            strokeWidth="5.5"
             strokeLinecap="round"
-            opacity="0.22"
+            opacity="0.2"
           />
           <line
-            x1="16"
+            x1="18"
             y1="2"
-            x2="16"
+            x2="18"
             y2="86"
-            stroke="url(#calciumTrailGrad)"
-            strokeWidth="2.5"
+            stroke="url(#calciumShimmerGrad)"
+            strokeWidth="2.4"
             strokeLinecap="round"
           />
 
-          <circle cx="11" cy="36" r="1.1" fill="#C084FC" opacity="0.65" />
-          <circle cx="21" cy="48" r="1.2" fill="#D8B4FE" opacity="0.75" />
-          <circle cx="10" cy="62" r="1.3" fill="#E9D5FF" opacity="0.85" />
-          <circle cx="21.5" cy="70" r="1.2" fill="#F3E8FF" opacity="0.9" />
-          <circle cx="12" cy="79" r="1.4" fill="#F5D0FE" opacity="0.95" />
+          <circle cx="11" cy="34" r="1.1" fill="#C084FC" opacity="0.7" />
+          <circle cx="25" cy="46" r="1.2" fill="#D8B4FE" opacity="0.8" />
+          <circle cx="10.5" cy="58" r="1.3" fill="#E9D5FF" opacity="0.85" />
+          <circle cx="25.5" cy="68" r="1.2" fill="#D8B4FE" opacity="0.9" />
+          <circle cx="12.5" cy="78" r="1.3" fill="#F3E8FF" opacity="0.95" />
 
-          <circle cx="16" cy="87" r="9" fill="url(#calciumTipGlow)" />
+          <circle cx="18" cy="87" r="9" fill="url(#calciumSparkGlow)" />
           <path
-            d="M16 80.5l1.4 4.8 4.8 1.4-4.8 1.4-1.4 4.8-1.4-4.8-4.8-1.4 4.8-1.4 1.4-4.8z"
-            fill="#F5D0FE"
+            d="M18 81l1.2 4.6 4.6 1.2-4.6 1.2-1.2 4.6-1.2-4.6-4.6-1.2 4.6-1.2 1.2-4.6z"
+            fill="#E9D5FF"
           />
-          <circle cx="16" cy="87" r="2.2" fill="#FFFFFF" />
+          <circle cx="18" cy="87" r="2" fill="#F3E8FF" />
         </svg>
       </div>
 
@@ -848,9 +877,9 @@ function FixedRightSideStreakFlow() {
             ref={(el) => {
               stageRefs.current[idx] = el;
             }}
-            className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-150 ${
+            className={`pr-7 text-sm font-semibold tracking-wide transition-all duration-150 ${
               isHighlighted
-                ? "scale-105 text-violet-200 drop-shadow-[0_0_12px_rgba(192,132,252,0.95)]"
+                ? "scale-105 text-purple-200 drop-shadow-[0_0_12px_rgba(192,132,252,0.95)]"
                 : "text-sky-100/80"
             }`}
           >
