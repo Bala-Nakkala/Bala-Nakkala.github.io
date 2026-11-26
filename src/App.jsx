@@ -746,16 +746,16 @@ function FixedRightSideStreakFlow() {
       if (col && streak) {
         const colRect = col.getBoundingClientRect();
         const height = col.offsetHeight || 420;
-        const streakHeight = streak.offsetHeight || 64;
+        const streakHeight = streak.offsetHeight || 72;
         const y = -streakHeight + progress * (height + streakHeight * 1.15);
         streak.style.transform = `translate3d(0, ${y}px, 0)`;
 
         if (spark) {
-          const twinklePhase = (now * 0.022) % (Math.PI * 2);
-          const scale = 0.72 + ((Math.sin(twinklePhase) + 1) / 2) * 0.52;
-          const opacity = 0.65 + ((Math.cos(twinklePhase * 1.3) + 1) / 2) * 0.35;
-          const rot = ((now * 0.08) % 360).toFixed(1);
-          spark.style.transform = `translate3d(0, 2px, 0) scale(${scale.toFixed(2)}) rotate(${rot}deg)`;
+          const twinklePhase = (now * 0.024) % (Math.PI * 2);
+          const scale = 0.78 + ((Math.sin(twinklePhase) + 1) / 2) * 0.45;
+          const opacity = 0.72 + ((Math.cos(twinklePhase * 1.3) + 1) / 2) * 0.28;
+          const rot = ((now * 0.09) % 360).toFixed(1);
+          spark.style.transform = `translate3d(0, -1px, 0) scale(${scale.toFixed(2)}) rotate(${rot}deg)`;
           spark.style.opacity = opacity.toFixed(2);
         }
 
@@ -790,21 +790,25 @@ function FixedRightSideStreakFlow() {
       ref={columnRef}
       className="pointer-events-none fixed right-3 top-24 z-20 flex flex-col items-end gap-2 pr-0.5 select-none"
     >
+      {/* Calcium violet/lavender meteor streak moving from Code to User */}
       <div
         ref={streakRef}
         aria-hidden="true"
         className="pointer-events-none absolute top-0 right-0 flex flex-col items-center will-change-transform"
         style={{ transform: "translate3d(0, -80px, 0)" }}
       >
-        <span className="h-14 w-[2.5px] rounded-full bg-gradient-to-b from-transparent via-sky-400/80 to-cyan-200 shadow-[0_0_8px_rgba(34,211,238,0.75)]" />
-        <svg
-          ref={sparkRef}
-          className="h-3.5 w-3.5 text-amber-200 drop-shadow-[0_0_6px_rgba(253,224,71,0.95)] will-change-transform"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z" />
-        </svg>
+        <span className="h-16 w-[2.5px] rounded-full bg-gradient-to-b from-transparent via-purple-500/75 to-violet-300 shadow-[0_0_10px_rgba(168,85,247,0.85)]" />
+        <span className="relative -mt-1 flex items-center justify-center">
+          <span className="h-3.5 w-3.5 rounded-full bg-violet-200 blur-[2px]" />
+          <svg
+            ref={sparkRef}
+            className="absolute h-4 w-4 text-violet-200 drop-shadow-[0_0_8px_rgba(192,132,252,0.98)] will-change-transform"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 1.5l1.8 6.7L20.5 10l-6.7 1.8L12 18.5l-1.8-6.7L3.5 10l6.7-1.8L12 1.5z" />
+          </svg>
+        </span>
       </div>
 
       {FLOW_STAGES.map((stage, idx) => {
@@ -817,7 +821,7 @@ function FixedRightSideStreakFlow() {
             }}
             className={`pr-4 text-sm font-semibold tracking-wide transition-all duration-150 ${
               isHighlighted
-                ? "scale-105 text-cyan-200 drop-shadow-[0_0_12px_rgba(34,211,238,0.95)]"
+                ? "scale-105 text-violet-200 drop-shadow-[0_0_12px_rgba(192,132,252,0.95)]"
                 : "text-sky-100/80"
             }`}
           >
